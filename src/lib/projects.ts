@@ -10,6 +10,7 @@ export interface IProject {
   technologies: string[]
   screenshots: IProjectScreenshot[]
   url?: string
+  addressBar?: string
 }
 
 interface IProjectsContent {
@@ -141,6 +142,7 @@ export const projectsContent: IProjectsContent = {
         'Tailwind CSS',
       ],
       screenshots: buildScreenshots('vippets', 'VipPets', 4),
+      addressBar: 'anonimo',
     },
   ] satisfies IProject[],
 } as const

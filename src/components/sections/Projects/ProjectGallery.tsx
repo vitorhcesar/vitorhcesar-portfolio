@@ -2,16 +2,53 @@ import { OptimizedImage } from '#/components/ui/OptimizedImage'
 import type { IProjectScreenshot } from '#/lib/projects'
 import { cn } from '#/lib/cn'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { ProjectNotebookFrame } from './ProjectNotebookFrame'
 
 interface ProjectGalleryProps {
   screenshots: IProjectScreenshot[]
   projectName: string
+  projectUrl?: string
+  addressBar?: string
+  isActive?: boolean
 }
 
-export function ProjectGallery({ screenshots, projectName }: ProjectGalleryProps) {
+function getAddressBar(projectUrl?: string, projectName?: string, addressBar?: string) {
+  if (addressBar) return addressBar
+
+  if (projectUrl) {
+    try {
+      return new URL(projectUrl).hostname
+    } catch {
+      return projectUrl
+    }
+  }
+
+  return `${projectName?.toLowerCase().replace(/\s+/g, '') ?? 'projeto'}.app`
+}
+
+function isPresentationSlide(index: number) {
+  return index === 0
+}
+
+function isEditableTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false
+
+  const tag = target.tagName
+  return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable
+}
+
+export function ProjectGallery({
+  screenshots,
+  projectName,
+  projectUrl,
+  addressBar: addressBarOverride,
+  isActive = false,
+}: ProjectGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const hasMultiple = screenshots.length > 1
+  const addressBar = getAddressBar(projectUrl, projectName, addressBarOverride)
+  const isPresentationActive = isPresentationSlide(activeIndex)
 
   const goTo = useCallback(
     (index: number) => {
@@ -22,6 +59,28 @@ export function ProjectGallery({ screenshots, projectName }: ProjectGalleryProps
 
   const goPrev = useCallback(() => goTo(activeIndex - 1), [activeIndex, goTo])
   const goNext = useCallback(() => goTo(activeIndex + 1), [activeIndex, goTo])
+
+  useEffect(() => {
+    if (!isActive || !hasMultiple) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target)) return
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault()
+        goPrev()
+      }
+
+      if (event.key === 'ArrowRight') {
+        event.preventDefault()
+        goNext()
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isActive, hasMultiple, goPrev, goNext])
 
   const activeScreenshot = screenshots[activeIndex]
 
@@ -34,37 +93,67 @@ export function ProjectGallery({ screenshots, projectName }: ProjectGalleryProps
     >
       <div
         className={cn(
-          'relative aspect-video min-h-[11.5rem] overflow-hidden bg-[#071422]/40 sm:min-h-[12.5rem]',
-          'rounded-none border-y border-white/10 lg:rounded-2xl lg:border',
-          'shadow-[0_0_40px_rgba(37,99,235,0.08)] transition-shadow duration-500',
+          'relative transition-shadow duration-500',
+          isPresentationActive
+            ? cn(
+                'aspect-video min-h-[11.5rem] overflow-hidden bg-[#071422]/40 sm:min-h-[12.5rem]',
+                'rounded-none border-y border-white/10 lg:rounded-2xl lg:border',
+              )
+            : cn(
+                'px-2 py-3 sm:px-3 sm:py-4',
+                'lg:rounded-2xl lg:border lg:border-white/10 lg:bg-[#071422]/20',
+              ),
+          'shadow-[0_0_40px_rgba(37,99,235,0.08)]',
           'group-hover/gallery:border-primary/20 group-hover/gallery:shadow-[0_0_60px_rgba(37,99,235,0.12)]',
         )}
       >
-        <div className="relative size-full">
-          {screenshots.map((screenshot, index) => (
-            <div
-              key={screenshot.src}
-              className={cn(
-                'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
-                index === activeIndex ? 'opacity-100' : 'pointer-events-none opacity-0',
-              )}
-              aria-hidden={index !== activeIndex}
-            >
-              <OptimizedImage
-                src={screenshot.src}
-                alt={screenshot.alt}
-                className="size-full object-cover object-top"
-                loading={index === 0 ? 'eager' : 'lazy'}
-                sizes="(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 640px"
-              />
-            </div>
-          ))}
-        </div>
-
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#020617]/80 to-transparent"
-          aria-hidden="true"
-        />
+          className={cn(
+            'relative w-full',
+            isPresentationActive
+              ? 'size-full'
+              : 'min-h-[11.5rem] sm:min-h-[12.5rem]',
+          )}
+        >
+          {screenshots.map((screenshot, index) => {
+            const isPresentation = isPresentationSlide(index)
+
+            return (
+              <div
+                key={screenshot.src}
+                className={cn(
+                  'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
+                  index === activeIndex ? 'opacity-100' : 'pointer-events-none opacity-0',
+                  !isPresentation && 'flex items-center justify-center p-1 sm:p-2',
+                )}
+                aria-hidden={index !== activeIndex}
+              >
+                {isPresentation ? (
+                  <>
+                    <OptimizedImage
+                      src={screenshot.src}
+                      alt={screenshot.alt}
+                      className="size-full object-cover object-top"
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      sizes="(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 640px"
+                    />
+                    <div
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#020617]/80 to-transparent"
+                      aria-hidden="true"
+                    />
+                  </>
+                ) : (
+                  <ProjectNotebookFrame
+                    screenshot={screenshot}
+                    addressBar={addressBar}
+                    loading={index === 1 ? 'eager' : 'lazy'}
+                    className="w-full"
+                  />
+                )}
+              </div>
+            )
+          })}
+        </div>
 
         {hasMultiple && (
           <>
@@ -103,7 +192,11 @@ export function ProjectGallery({ screenshots, projectName }: ProjectGalleryProps
             {activeScreenshot.alt} — {activeIndex + 1} de {screenshots.length}
           </p>
 
-          <div className="flex flex-1 items-center justify-center gap-2" role="tablist" aria-label="Screenshots do projeto">
+          <div
+            className="flex flex-1 items-center justify-center gap-2"
+            role="tablist"
+            aria-label="Screenshots do projeto"
+          >
             {screenshots.map((screenshot, index) => (
               <button
                 key={screenshot.src}

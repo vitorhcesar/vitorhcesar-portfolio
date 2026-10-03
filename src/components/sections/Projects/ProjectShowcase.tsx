@@ -1,4 +1,5 @@
 import type { IProject } from '#/lib/projects'
+import { useProjectInView } from '#/hooks/useProjectInView'
 import { cn } from '#/lib/cn'
 import { ArrowRight } from 'lucide-react'
 import { ProjectGallery } from './ProjectGallery'
@@ -7,17 +8,28 @@ import { ProjectTechStack } from './ProjectTechStack'
 interface ProjectShowcaseProps {
   project: IProject
   index: number
+  isActive: boolean
+  onVisibilityChange: (slug: string, ratio: number) => void
 }
 
-export function ProjectShowcase({ project, index }: ProjectShowcaseProps) {
+export function ProjectShowcase({
+  project,
+  index,
+  isActive,
+  onVisibilityChange,
+}: ProjectShowcaseProps) {
   const isReversed = index % 2 === 1
+  const projectRef = useProjectInView(project.slug, onVisibilityChange)
 
   return (
     <article
+      ref={projectRef}
       aria-labelledby={`project-${project.slug}-title`}
       className={cn(
-        'group overflow-hidden rounded-2xl border border-white/10 bg-surface/50 backdrop-blur-md transition-colors',
-        'hover:border-primary/30 hover:bg-surface/80',
+        'group overflow-hidden rounded-2xl border bg-surface/50 backdrop-blur-md transition-all duration-500',
+        isActive
+          ? 'border-primary/50 shadow-[0_0_48px_rgba(37,99,235,0.18)]'
+          : 'border-white/10 hover:border-primary/30 hover:bg-surface/80',
       )}
     >
       <div
@@ -32,7 +44,13 @@ export function ProjectShowcase({ project, index }: ProjectShowcaseProps) {
             'lg:mx-0 lg:w-full',
           )}
         >
-          <ProjectGallery screenshots={project.screenshots} projectName={project.name} />
+          <ProjectGallery
+            screenshots={project.screenshots}
+            projectName={project.name}
+            projectUrl={project.url}
+            addressBar={project.addressBar}
+            isActive={isActive}
+          />
         </div>
 
         <div className="flex flex-col gap-4 p-4 sm:gap-5 sm:p-6 lg:p-0">

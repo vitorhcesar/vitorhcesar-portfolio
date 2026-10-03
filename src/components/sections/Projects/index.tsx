@@ -1,4 +1,5 @@
 import { SectionHeading } from '#/components/ui/SectionHeading'
+import { useProjectsActiveSlug } from '#/hooks/useProjectsActiveSlug'
 import { projectsContent } from '#/lib/projects'
 import { SectionReveal } from '../About/SectionReveal'
 import { ProjectShowcase } from './ProjectShowcase'
@@ -6,6 +7,8 @@ import { ProjectsBackground } from './ProjectsBackground'
 import { ProjectsCornerMark } from './ProjectsCornerMark'
 
 export function Projects() {
+  const { activeSlug, updateRatio } = useProjectsActiveSlug()
+
   return (
     <section
       id="projetos"
@@ -28,7 +31,12 @@ export function Projects() {
         <div className="mt-12 space-y-10 lg:mt-16 lg:space-y-16">
           {projectsContent.items.map((project, index) => (
             <SectionReveal key={project.slug} delay={index * 80}>
-              <ProjectShowcase project={project} index={index} />
+              <ProjectShowcase
+                project={project}
+                index={index}
+                isActive={activeSlug === project.slug}
+                onVisibilityChange={updateRatio}
+              />
             </SectionReveal>
           ))}
         </div>
