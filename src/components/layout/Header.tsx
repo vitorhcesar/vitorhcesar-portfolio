@@ -1,4 +1,4 @@
-import { ExternalLink, Moon } from 'lucide-react'
+import { FileText, Moon } from 'lucide-react'
 
 const navLinks = [
   { label: 'Início', href: '#inicio', active: true },
@@ -49,10 +49,10 @@ export function Header() {
 
           <a
             href="#"
-            className="flex items-center gap-2 rounded-md border border-white/25 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-white/50"
+            className="flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-white/50"
           >
+            <FileText className="h-3.5 w-3.5" />
             Currículo
-            <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </div>
       </div>
