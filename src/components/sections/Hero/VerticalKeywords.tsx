@@ -15,9 +15,9 @@ export function VerticalKeywords() {
     <div
       className={cn(
         'hidden',
-        'absolute top-[46%] right-5 z-20 xl:right-8',
+        'absolute top-[46%] right-5 z-20 2xl:right-8',
         '-translate-y-1/2',
-        'items-center gap-4 lg:flex',
+        'items-center gap-4 2xl:flex',
       )}
     >
       <div className="h-40 w-px bg-primary/70" />

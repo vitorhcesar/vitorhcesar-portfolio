@@ -21,20 +21,20 @@ const otherTechnologies = technologies.slice(5)
 
 export function TechStack() {
   return (
-    <div className="mt-12 space-y-4">
-      <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+    <div className="mt-8 space-y-3 sm:mt-10 lg:space-y-4 2xl:mt-12">
+      <div className="grid grid-cols-2 items-center gap-x-3 gap-y-3 min-[430px]:grid-cols-3 sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-3 lg:gap-x-7 lg:gap-y-4">
         {firstFiveTechnologies.map((tech) => (
           <TechItem key={tech.name} tech={tech} />
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+      <div className="grid grid-cols-2 items-center gap-x-3 gap-y-3 min-[430px]:grid-cols-3 sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-3 lg:gap-x-7 lg:gap-y-4">
         {otherTechnologies.map((tech) => (
           <TechItem key={tech.name} tech={tech} />
         ))}
 
-        <div className="flex flex-col items-center gap-1.5">
-          <span className="text-[.9rem] font-medium text-muted/70">
+        <div className="flex min-h-8 items-center sm:min-h-0 sm:flex-col sm:gap-1.5">
+          <span className="text-xs font-medium text-muted/70 sm:text-[.8rem] 2xl:text-[.9rem]">
             + outras
           </span>
         </div>
@@ -45,11 +45,11 @@ export function TechStack() {
 
 function TechItem({ tech }: { tech: ITechnology }) {
   return (
-    <div className="group flex items-center gap-2">
+    <div className="group flex min-w-0 items-center gap-2">
       <div className="flex items-center justify-center text-muted transition-colors group-hover:text-white">
         <TechIcon src={tech.icon} />
       </div>
-      <span className="text-[.9rem] font-medium text-muted/70">
+      <span className="truncate text-xs font-medium text-muted/70 sm:text-[.8rem] 2xl:text-[.9rem]">
         {tech.name}
       </span>
     </div>
@@ -60,7 +60,7 @@ function TechIcon({ src }: { src: string }) {
   return (
     <span
       aria-hidden
-      className="block size-9 bg-current mask-center mask-no-repeat mask-contain"
+      className="block size-7 shrink-0 bg-current mask-center mask-no-repeat mask-contain sm:size-8 2xl:size-9"
       style={{
         maskImage: `url(${src})`,
         WebkitMaskImage: `url(${src})`,

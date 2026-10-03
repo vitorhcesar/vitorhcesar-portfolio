@@ -6,7 +6,7 @@ export function ExperienceBadge() {
     <div
       className={cn(
         'hidden lg:block',
-        'absolute top-[17%] right-[4.5%] z-20 xl:top-[16%] xl:right-[6%]',
+        'absolute top-[15%] right-[2%] z-20 origin-top-right scale-75 2xl:top-[16%] 2xl:right-[6%] 2xl:scale-100',
         'animate-float',
       )}
     >

@@ -8,7 +8,7 @@ import { VerticalKeywords } from './VerticalKeywords'
 
 export function Hero() {
   return (
-    <section id="inicio" className="relative h-screen w-full overflow-hidden">
+    <section id="inicio" className="relative min-h-dvh w-full overflow-x-clip">
       <HeroBackground />
       <HeroContent />
       <HeroPortrait />

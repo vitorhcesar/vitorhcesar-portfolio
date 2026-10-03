@@ -16,8 +16,8 @@ export function CornerMark() {
     <div
       className={cn(
         'hidden',
-        'flex-col items-start gap-5 lg:flex',
-        'absolute right-8 bottom-8 z-20 xl:right-20',
+        'flex-col items-start gap-5 2xl:flex',
+        'absolute right-8 bottom-8 z-20 2xl:right-20',
       )}
     >
       <div className="flex flex-col items-start gap-0.5">

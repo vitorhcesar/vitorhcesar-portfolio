@@ -6,9 +6,10 @@ export function ScrollHint() {
     <a
       href="#sobre"
       className={cn(
-        'absolute bottom-8 left-8 z-20 lg:left-12 xl:left-20',
-        'flex items-center gap-3',
+        'absolute bottom-8 left-8 z-20 hidden 2xl:left-20',
+        'items-center gap-3 2xl:flex',
         'text-primary',
+        'rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary',
       )}
     >
       <ArrowDown className="size-10 animate-bounce" />

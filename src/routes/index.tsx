@@ -6,7 +6,7 @@ export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-background">
+    <div className="relative min-h-dvh w-full overflow-x-clip bg-background">
       <Header />
       <Hero />
     </div>

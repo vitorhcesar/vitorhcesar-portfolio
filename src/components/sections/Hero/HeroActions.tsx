@@ -3,17 +3,18 @@ import { ArrowRight, Mail } from 'lucide-react'
 
 export function HeroActions() {
   return (
-    <div className="mt-8 flex flex-wrap items-center gap-3.5">
+    <div className="mt-6 grid w-full grid-cols-1 gap-3 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:gap-3.5 lg:mt-8">
       <a
         href="#projetos"
         className={cn(
-          'inline-flex items-center gap-2',
-          'px-10 py-4',
+          'inline-flex items-center justify-center gap-2',
+          'px-6 py-3.5 sm:px-8 2xl:px-10 2xl:py-4',
           'bg-primary hover:bg-primary-light',
           'text-base font-semibold text-white',
           'shadow-[0_8px_28px_rgba(37,99,235,0.35)]',
           'transition-colors',
           'rounded-xl',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-light',
         )}
       >
         Ver meus projetos
@@ -22,13 +23,14 @@ export function HeroActions() {
       <a
         href="#contato"
         className={cn(
-          'inline-flex items-center gap-2',
-          'px-10 py-4',
+          'inline-flex items-center justify-center gap-2',
+          'px-6 py-3.5 sm:px-8 2xl:px-10 2xl:py-4',
           'hover:bg-white/10',
           'border border-white/25',
           'text-base font-semibold text-white',
           'transition-colors',
           'rounded-xl',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-light',
         )}
       >
         Entrar em contato
