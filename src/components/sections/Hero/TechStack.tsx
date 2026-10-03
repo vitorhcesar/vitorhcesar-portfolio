@@ -35,7 +35,14 @@ export function TechStack() {
           <TechItem key={tech.name} tech={tech} index={index + 5} />
         ))}
 
-        <div className="flex min-h-8 items-center sm:min-h-0 sm:flex-col sm:gap-1.5">
+        <div
+          className="hero-reveal-item flex min-h-8 items-center sm:min-h-0 sm:flex-col sm:gap-1.5"
+          style={
+            {
+              '--reveal-delay': `${760 + technologies.length * 50}ms`,
+            } as CSSProperties
+          }
+        >
           <span className="text-xs font-medium text-muted/70 sm:text-[.8rem] 2xl:text-[.9rem]">
             + outras
           </span>
