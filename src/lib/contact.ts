@@ -16,7 +16,7 @@ export interface ContactChannel {
 export const contactContent = {
   title: 'Vamos tirar sua ideia do papel?',
   description:
-    'Desenvolvo soluções digitais sob medida para transformar necessidades reais em produtos funcionais. Se você tem um projeto em mente, vamos conversar.',
+    'Desenvolvo soluções digitais sob medida para transformar necessidades reais em produtos funcionais. Se você tem um projeto em mente, me chame!',
   panelCopy:
     'Projetos bem definidos, desafios técnicos e parcerias de longo prazo.',
   availability: 'DISPONÍVEL PARA NOVOS PROJETOS',
