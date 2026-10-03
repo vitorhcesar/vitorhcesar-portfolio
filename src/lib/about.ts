@@ -96,6 +96,14 @@ export const aboutContent: IAboutContent = {
       current: true,
     },
     {
+      company: 'Oasyfy',
+      role: 'Desenvolvedor Full Stack',
+      period: '6 meses',
+      description:
+        'Desenvolvimento full stack do gateway de pagamentos Oasyfy, com API PIX, portais admin e seller, KYC, checkout personalizado e integrações com adquirentes. Stack: React, Vite, TanStack Query, Bun, Elysia, Prisma e PostgreSQL.',
+      siteUrl: 'https://app.oasyfy.com',
+    },
+    {
       company: 'Astrofy',
       role: 'Desenvolvedor Frontend',
       period: '1 ano e 6 meses',
