@@ -1,5 +1,6 @@
 import { FileText, Menu, X } from 'lucide-react'
 import { useEffect, useState, type CSSProperties } from 'react'
+import { useActiveSection } from '#/hooks/useActiveSection'
 import { GithubIcon } from '../icons/GithubIcon'
 
 const SCROLL_THRESHOLD = 48
@@ -7,26 +8,28 @@ const SCROLL_THRESHOLD = 48
 interface INavLink {
   label: string
   href: string
-  active: boolean
 }
 
 const navLinks: INavLink[] = [
-  { label: 'Início', href: '#inicio', active: true },
-  { label: 'Sobre', href: '#sobre', active: false },
-  { label: 'Projetos', href: '#projetos', active: false },
-  { label: 'Contato', href: '#contato', active: false },
+  { label: 'Início', href: '#inicio' },
+  { label: 'Sobre', href: '#sobre' },
+  { label: 'Projetos', href: '#projetos' },
+  { label: 'Contato', href: '#contato' },
 ]
+
+const sectionIds = navLinks.map((link) => link.href.slice(1))
 
 function NavLink({
   label,
   href,
   active,
   onClick,
-}: INavLink & { onClick?: () => void }) {
+}: INavLink & { active: boolean; onClick?: () => void }) {
   return (
     <a
       href={href}
       onClick={onClick}
+      aria-current={active ? 'page' : undefined}
       className={`relative pb-1 text-[1rem] font-medium transition-colors hover:text-white focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary ${
         active ? 'text-white' : 'text-muted'
       }`}
@@ -42,6 +45,7 @@ function NavLink({
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const activeSection = useActiveSection(sectionIds)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,7 +93,11 @@ export function Header() {
           className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-5 md:flex lg:gap-8 xl:gap-10"
         >
           {navLinks.map((link) => (
-            <NavLink key={link.href} {...link} />
+            <NavLink
+              key={link.href}
+              {...link}
+              active={activeSection === link.href.slice(1)}
+            />
           ))}
         </nav>
 
@@ -146,7 +154,11 @@ export function Header() {
               key={link.href}
               className="rounded-xl px-4 py-3 hover:bg-white/5"
             >
-              <NavLink {...link} onClick={closeMenu} />
+              <NavLink
+                {...link}
+                active={activeSection === link.href.slice(1)}
+                onClick={closeMenu}
+              />
             </div>
           ))}
         </div>
