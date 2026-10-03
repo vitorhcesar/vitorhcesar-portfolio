@@ -23,6 +23,9 @@ export const siteConfig = {
   ogImage: '/images/og-image.jpg',
   twitterHandle: '@vitorhcesar',
   github: 'https://github.com/vitorhcesar',
+  instagram: 'https://instagram.com/vitorhugo.cesar',
+  instagramHandle: 'vitorhugo.cesar',
+  socialAvatar: '/images/social-avatar.webp',
   linkedin: import.meta.env.VITE_LINKEDIN_URL as string | undefined,
   email: import.meta.env.VITE_CONTACT_EMAIL as string | undefined,
   resume: '/vitor-cesar-pt.pdf',
@@ -34,7 +37,9 @@ export function absoluteUrl(path: string) {
 }
 
 function getSameAsLinks() {
-  return [siteConfig.github, siteConfig.linkedin].filter(Boolean) as string[]
+  return [siteConfig.github, siteConfig.instagram, siteConfig.linkedin].filter(
+    Boolean,
+  ) as string[]
 }
 
 type MetaTag = {

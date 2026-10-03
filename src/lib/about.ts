@@ -27,6 +27,7 @@ interface IAboutHighlights {
 
 interface IAboutLinks {
   github: string
+  instagram: string
   cv: string
   linkedin: string
 }
@@ -143,6 +144,7 @@ export const aboutContent: IAboutContent = {
   ] satisfies IAboutEducation[],
   links: {
     github: siteConfig.github,
+    instagram: siteConfig.instagram,
     cv: siteConfig.resume,
     linkedin: siteConfig.linkedin ?? '',
   },
