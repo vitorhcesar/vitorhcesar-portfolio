@@ -20,8 +20,8 @@ const links: AboutLinkItem[] = [
     icon: <GithubIcon />,
   },
   {
-    label: 'Currículo online',
-    description: 'Experiência e projetos detalhados',
+    label: 'Currículo',
+    description: 'PDF em português',
     href: aboutContent.links.cv,
     icon: <FileText className="size-5" aria-hidden="true" />,
   },

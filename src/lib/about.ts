@@ -126,7 +126,7 @@ export const aboutContent: IAboutContent = {
   ] satisfies IAboutEducation[],
   links: {
     github: siteConfig.github,
-    cv: 'https://vitorhcesar-curriculum-vitae.vercel.app/',
+    cv: siteConfig.resume,
     linkedin: siteConfig.linkedin ?? '',
   },
 } as const
