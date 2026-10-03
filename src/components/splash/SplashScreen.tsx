@@ -1,11 +1,11 @@
 import { HERO_INTRO_DURATION_MS } from '#/lib/splash-config'
 import { useEffect, useRef, useState } from 'react'
 
-const LINE_1 = 'Já pensou na sua ideia...'
-const LINE_2 = 'no digital?'
+const SPLASH_PREFIX = 'Tudo começa com uma '
+const SPLASH_ACCENT = 'ideia.'
+const SPLASH_TEXT = `${SPLASH_PREFIX}${SPLASH_ACCENT}`
 const TYPE_SPEED_MS = 35
-const PAUSE_BETWEEN_LINES_MS = 1200
-const PAUSE_BEFORE_EXIT_MS = 1000
+const PAUSE_BEFORE_EXIT_MS = 1500
 
 function sleep(ms: number) {
   return new Promise<void>((resolve) => {
@@ -20,12 +20,14 @@ interface SplashScreenProps {
 export function SplashScreen({ onComplete }: SplashScreenProps) {
   const splashRef = useRef<HTMLDivElement>(null)
   const revealingStartedAtRef = useRef(0)
-  const [line1, setLine1] = useState('')
-  const [line2, setLine2] = useState('')
-  const [showLine2, setShowLine2] = useState(false)
-  const [activeLine, setActiveLine] = useState<1 | 2 | null>(1)
+  const [text, setText] = useState('')
+  const [showCursor, setShowCursor] = useState(true)
   const [exiting, setExiting] = useState(false)
   const [skipped, setSkipped] = useState(false)
+
+  const prefixPart = text.slice(0, Math.min(text.length, SPLASH_PREFIX.length))
+  const accentPart =
+    text.length > SPLASH_PREFIX.length ? text.slice(SPLASH_PREFIX.length) : ''
 
   useEffect(() => {
     if (document.documentElement.dataset.splash === 'skip') {
@@ -36,25 +38,13 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     let cancelled = false
 
     async function runTypewriter() {
-      for (let i = 1; i <= LINE_1.length; i++) {
+      for (let i = 1; i <= SPLASH_TEXT.length; i++) {
         if (cancelled) return
-        setLine1(LINE_1.slice(0, i))
+        setText(SPLASH_TEXT.slice(0, i))
         await sleep(TYPE_SPEED_MS)
       }
 
-      await sleep(PAUSE_BETWEEN_LINES_MS)
-      if (cancelled) return
-
-      setShowLine2(true)
-      setActiveLine(2)
-
-      for (let i = 1; i <= LINE_2.length; i++) {
-        if (cancelled) return
-        setLine2(LINE_2.slice(0, i))
-        await sleep(TYPE_SPEED_MS)
-      }
-
-      setActiveLine(null)
+      setShowCursor(false)
       await sleep(PAUSE_BEFORE_EXIT_MS)
       if (cancelled) return
 
@@ -108,15 +98,12 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     >
       <div className="splash-content">
         <p className="splash-line">
-          <span className="splash-text">{line1}</span>
-          {activeLine === 1 && <span className="splash-cursor" aria-hidden />}
+          <span className="splash-text">{prefixPart}</span>
+          {accentPart && (
+            <span className="splash-text-accent">{accentPart}</span>
+          )}
+          {showCursor && <span className="splash-cursor" aria-hidden />}
         </p>
-        {showLine2 && (
-          <p className="splash-line splash-line-2">
-            <span className="splash-text splash-text-accent">{line2}</span>
-            {activeLine === 2 && <span className="splash-cursor" aria-hidden />}
-          </p>
-        )}
       </div>
     </div>
   )
