@@ -12,7 +12,26 @@ const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [
     devtools(),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+    nitro({
+      routeRules: {
+        '/assets/**': {
+          headers: { 'cache-control': 'public, max-age=31536000, immutable' },
+        },
+        '/images/**': {
+          headers: { 'cache-control': 'public, max-age=31536000, immutable' },
+        },
+        '/icons/**': {
+          headers: { 'cache-control': 'public, max-age=31536000, immutable' },
+        },
+        '/**': {
+          headers: {
+            'x-content-type-options': 'nosniff',
+            'x-frame-options': 'DENY',
+            'referrer-policy': 'strict-origin-when-cross-origin',
+          },
+        },
+      },
+    }),
     tailwindcss(),
     tanstackStart(),
     viteReact(),

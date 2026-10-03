@@ -60,7 +60,7 @@ export function Header() {
             <img
               src="/images/logo-vh.png"
               alt="Vitor Hugo"
-              className="h-7 sm:h-8"
+              className="h-7 w-auto sm:h-8"
             />
           </span>
         </a>
