@@ -54,6 +54,8 @@ links.push({
   description: 'PDF em português',
   href: aboutContent.links.cv,
   icon: <FileText className="size-5" aria-hidden="true" />,
+  labelIcon: <FileText className="size-5" aria-hidden="true" />,
+  avatarUrl: siteConfig.socialAvatar,
 })
 
 function LabelWithIcon({ label, labelIcon }: { label: string; labelIcon?: ReactNode }) {

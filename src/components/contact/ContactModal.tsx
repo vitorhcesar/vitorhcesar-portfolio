@@ -223,7 +223,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 id="contact-modal-title"
                 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl"
               >
-                Vamos conversar?
+                Envie sua mensagem
               </h2>
               <p
                 id="contact-modal-description"

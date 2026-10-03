@@ -167,6 +167,12 @@ export function createPersonJsonLd() {
             name: project.name,
             description: project.description,
             keywords: project.technologies.join(', '),
+            ...(project.url && { url: project.url }),
+            ...(project.screenshots[0] && {
+              image: absoluteUrl(
+                project.screenshots[0].webpSrc ?? project.screenshots[0].src,
+              ),
+            }),
           },
         })),
       },
