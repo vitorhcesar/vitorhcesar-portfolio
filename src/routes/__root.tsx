@@ -5,6 +5,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import { NotFound } from '#/components/pages/NotFound'
+import { splashSkipScript } from '#/lib/splash-script'
 import { siteConfig } from '#/lib/seo'
 import appCss from '../styles.css?url'
 
@@ -60,9 +61,10 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang={siteConfig.language}>
+    <html lang={siteConfig.language} data-splash="active">
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: splashSkipScript }} />
       </head>
       <body className="bg-background text-white antialiased">
         <a

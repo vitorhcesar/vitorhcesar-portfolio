@@ -1,15 +1,22 @@
 import { cn } from '#/lib/cn'
 import { CodeXml } from 'lucide-react'
+import type { CSSProperties } from 'react'
 
 export function ExperienceBadge() {
   return (
     <div
       className={cn(
-        'hidden lg:block',
-        'absolute top-[15%] right-[2%] z-20 origin-top-right scale-75 2xl:top-[16%] 2xl:right-[6%] 2xl:scale-100',
-        'animate-float',
+        'hero-reveal-pop-in hidden lg:block',
+        'absolute top-[15%] right-[2%] z-20 2xl:top-[16%] 2xl:right-[6%]',
       )}
+      style={{ '--reveal-delay': '420ms' } as CSSProperties}
     >
+      <div
+        className={cn(
+          'relative origin-top-right scale-75 2xl:scale-100',
+          'animate-float',
+        )}
+      >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-visible"
@@ -50,6 +57,7 @@ export function ExperienceBadge() {
           </p>
           <p className="mt-1 text-[1.2rem] text-[#9fd6ff]/80">de experiência</p>
         </div>
+      </div>
       </div>
     </div>
   )

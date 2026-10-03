@@ -1,8 +1,11 @@
+import type { CSSProperties } from 'react'
+
 interface OptimizedImageProps {
   src: string
   webpSrc?: string
   alt: string
   className?: string
+  style?: CSSProperties
   width?: number
   height?: number
   loading?: 'lazy' | 'eager'
@@ -16,6 +19,7 @@ export function OptimizedImage({
   webpSrc,
   alt,
   className,
+  style,
   width,
   height,
   loading = 'lazy',
@@ -31,6 +35,7 @@ export function OptimizedImage({
           src={src}
           alt={alt}
           className={className}
+          style={style}
           width={width}
           height={height}
           loading={loading}
@@ -48,6 +53,7 @@ export function OptimizedImage({
       src={src}
       alt={alt}
       className={className}
+      style={style}
       width={width}
       height={height}
       loading={loading}

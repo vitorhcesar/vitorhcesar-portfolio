@@ -1,5 +1,5 @@
 import { FileText, Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { GithubIcon } from '../icons/GithubIcon'
 
 interface INavLink {
@@ -44,7 +44,8 @@ export function Header() {
 
   return (
     <header
-      className="absolute top-0 right-0 left-0 z-50 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20"
+      className="hero-reveal-fade absolute top-0 right-0 left-0 z-50 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20"
+      style={{ '--reveal-delay': '80ms' } as CSSProperties}
       onKeyDown={(event) => {
         if (event.key === 'Escape') closeMenu()
       }}

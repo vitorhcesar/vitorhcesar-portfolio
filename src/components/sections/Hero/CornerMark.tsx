@@ -1,5 +1,5 @@
 import { cn } from '#/lib/cn'
-import type { PropsWithChildren } from 'react'
+import type { CSSProperties, PropsWithChildren } from 'react'
 
 const lines = ['CÓDIGO', 'IDEIAS', 'RESULTADOS']
 
@@ -15,10 +15,11 @@ export function CornerMark() {
   return (
     <div
       className={cn(
-        'hidden',
+        'hero-reveal-pop-in hidden',
         'flex-col items-start gap-5 2xl:flex',
         'absolute right-8 bottom-8 z-20 2xl:right-20',
       )}
+      style={{ '--reveal-delay': '540ms' } as CSSProperties}
     >
       <div className="flex flex-col items-start gap-0.5">
         {lines.map((line) => (

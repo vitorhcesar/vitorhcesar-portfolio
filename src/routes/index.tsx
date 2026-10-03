@@ -4,6 +4,9 @@ import { About } from '#/components/sections/About'
 import { Contact } from '#/components/sections/Contact'
 import { Hero } from '#/components/sections/Hero'
 import { Projects } from '#/components/sections/Projects'
+import { SplashBlockPrompt } from '#/components/splash/SplashBlockPrompt'
+import { SplashScreen } from '#/components/splash/SplashScreen'
+import { useState } from 'react'
 import {
   createPageMeta,
   createPersonJsonLd,
@@ -24,8 +27,12 @@ export const Route = createFileRoute('/')({
 })
 
 function Home() {
+  const [showSplashPrompt, setShowSplashPrompt] = useState(false)
+
   return (
     <div className="relative min-h-dvh w-full overflow-x-clip bg-background">
+      <SplashScreen onComplete={() => setShowSplashPrompt(true)} />
+      <SplashBlockPrompt visible={showSplashPrompt} />
       <Header />
       <main id="conteudo-principal">
         <Hero />

@@ -1,9 +1,13 @@
 import { cn } from '#/lib/cn'
 import { ArrowRight, Mail } from 'lucide-react'
+import type { CSSProperties } from 'react'
 
 export function HeroActions() {
   return (
-    <div className="mt-6 grid w-full grid-cols-1 gap-3 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:gap-3.5 lg:mt-8">
+    <div
+      className="hero-reveal-item mt-6 grid w-full grid-cols-1 gap-3 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:gap-3.5 lg:mt-8"
+      style={{ '--reveal-delay': '560ms' } as CSSProperties}
+    >
       <a
         href="#projetos"
         className={cn(

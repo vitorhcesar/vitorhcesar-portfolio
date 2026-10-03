@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 interface ITechnology {
   name: string
   icon: string
@@ -23,14 +25,14 @@ export function TechStack() {
   return (
     <div className="mt-8 space-y-3 sm:mt-10 lg:space-y-4 2xl:mt-12">
       <div className="grid grid-cols-2 items-center gap-x-3 gap-y-3 min-[430px]:grid-cols-3 sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-3 lg:gap-x-7 lg:gap-y-4">
-        {firstFiveTechnologies.map((tech) => (
-          <TechItem key={tech.name} tech={tech} />
+        {firstFiveTechnologies.map((tech, index) => (
+          <TechItem key={tech.name} tech={tech} index={index} />
         ))}
       </div>
 
       <div className="grid grid-cols-2 items-center gap-x-3 gap-y-3 min-[430px]:grid-cols-3 sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-3 lg:gap-x-7 lg:gap-y-4">
-        {otherTechnologies.map((tech) => (
-          <TechItem key={tech.name} tech={tech} />
+        {otherTechnologies.map((tech, index) => (
+          <TechItem key={tech.name} tech={tech} index={index + 5} />
         ))}
 
         <div className="flex min-h-8 items-center sm:min-h-0 sm:flex-col sm:gap-1.5">
@@ -43,9 +45,12 @@ export function TechStack() {
   )
 }
 
-function TechItem({ tech }: { tech: ITechnology }) {
+function TechItem({ tech, index }: { tech: ITechnology; index: number }) {
   return (
-    <div className="group flex min-w-0 items-center gap-2">
+    <div
+      className="hero-reveal-item group flex min-w-0 items-center gap-2"
+      style={{ '--reveal-delay': `${760 + index * 50}ms` } as CSSProperties}
+    >
       <div className="flex items-center justify-center text-muted transition-colors group-hover:text-white">
         <TechIcon src={tech.icon} />
       </div>
