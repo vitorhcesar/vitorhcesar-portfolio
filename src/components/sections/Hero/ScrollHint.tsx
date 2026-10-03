@@ -11,7 +11,7 @@ export function ScrollHint() {
         'text-primary',
       )}
     >
-      <ArrowDown className="size-10" />
+      <ArrowDown className="size-10 animate-bounce" />
       <span className="text-[.7rem] font-semibold tracking-[0.22em] uppercase">
         Role para descobrir mais
       </span>
