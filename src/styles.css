@@ -350,6 +350,22 @@ html[data-splash='done'] .hero-reveal-slide-right {
   }
 }
 
+/* ── Section scroll reveal (About) ───────────────────────────── */
+
+.section-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.section-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* ── Contact modal ───────────────────────────────────────────── */
 
 /* Blur appears instantly on enter, fades out faster than the panel on exit. */
@@ -405,6 +421,11 @@ html[data-splash='done'] .hero-reveal-slide-right {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .section-reveal {
+    opacity: 1;
+    transform: none;
   }
 
   *,
