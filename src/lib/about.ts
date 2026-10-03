@@ -11,6 +11,7 @@ export interface IAboutExperience {
   period: string
   description: string
   current?: boolean
+  siteUrl?: string
 }
 
 export interface IAboutEducation {
@@ -93,6 +94,14 @@ export const aboutContent: IAboutContent = {
       description:
         'Desenvolvimento autônomo de aplicações web, SaaS, APIs, integrações e automações com diversas tecnologias.',
       current: true,
+    },
+    {
+      company: 'Astrofy',
+      role: 'Desenvolvedor Frontend',
+      period: '1 ano e 6 meses',
+      description:
+        'Desenvolvimento do frontend da plataforma Astrofy, utilizando tecnologias como Next.js, TypeScript, Tailwind CSS, Tanstack Query, React Flow e muito mais. Esse projeto foi um dos maiores que trabalhei, tendo mais de 1000 usuários ativos e muitas funcionalidades complexas implementadas.',
+      siteUrl: 'https://app.astrofy.site',
     },
     {
       company: 'ESSIA',
