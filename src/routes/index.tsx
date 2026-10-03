@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { ContactModalProvider } from '#/components/contact/ContactModalProvider'
 import { Header } from '#/components/layout/Header'
 import { About } from '#/components/sections/About'
 import { Contact } from '#/components/sections/Contact'
@@ -30,16 +31,18 @@ function Home() {
   const [showSplashPrompt, setShowSplashPrompt] = useState(false)
 
   return (
-    <div className="relative min-h-dvh w-full overflow-x-clip bg-background">
-      <SplashScreen onComplete={() => setShowSplashPrompt(true)} />
-      <SplashBlockPrompt visible={showSplashPrompt} />
-      <Header />
-      <main id="conteudo-principal">
-        <Hero />
-        <About />
-        <Projects />
-        <Contact />
-      </main>
-    </div>
+    <ContactModalProvider>
+      <div className="relative min-h-dvh w-full overflow-x-clip bg-background">
+        <SplashScreen onComplete={() => setShowSplashPrompt(true)} />
+        <SplashBlockPrompt visible={showSplashPrompt} />
+        <Header />
+        <main id="conteudo-principal">
+          <Hero />
+          <About />
+          <Projects />
+          <Contact />
+        </main>
+      </div>
+    </ContactModalProvider>
   )
 }

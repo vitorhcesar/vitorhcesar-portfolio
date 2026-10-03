@@ -350,6 +350,43 @@ html[data-splash='done'] .hero-reveal-slide-right {
   }
 }
 
+/* ── Contact modal ───────────────────────────────────────────── */
+
+/* Blur appears instantly on enter, fades out faster than the panel on exit. */
+.contact-modal-backdrop-blur {
+  opacity: 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: opacity 0.12s ease;
+}
+
+.contact-modal-backdrop-blur.is-visible {
+  opacity: 1;
+  transition: opacity 0s;
+}
+
+.contact-modal-backdrop-dim {
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.contact-modal-backdrop-dim.is-visible {
+  opacity: 1;
+}
+
+.contact-modal-panel {
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition:
+    opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-modal-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 .splash-prompt-enter {
   animation: splash-prompt-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

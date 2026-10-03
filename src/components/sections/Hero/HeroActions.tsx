@@ -1,8 +1,11 @@
+import { useContactModal } from '#/components/contact/ContactModalProvider'
 import { cn } from '#/lib/cn'
 import { ArrowRight, Mail } from 'lucide-react'
 import type { CSSProperties } from 'react'
 
 export function HeroActions() {
+  const { openContactModal } = useContactModal()
+
   return (
     <div
       className="hero-reveal-item mt-6 grid w-full grid-cols-1 gap-3 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:gap-3.5 lg:mt-8"
@@ -24,8 +27,9 @@ export function HeroActions() {
         Ver meus projetos
         <ArrowRight className="h-4 w-4" />
       </a>
-      <a
-        href="#contato"
+      <button
+        type="button"
+        onClick={openContactModal}
         className={cn(
           'inline-flex items-center justify-center gap-2',
           'px-6 py-3.5 sm:px-8 2xl:px-10 2xl:py-4',
@@ -39,7 +43,7 @@ export function HeroActions() {
       >
         Entrar em contato
         <Mail className="h-4 w-4" />
-      </a>
+      </button>
     </div>
   )
 }

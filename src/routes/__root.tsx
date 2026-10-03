@@ -7,6 +7,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import { NotFound } from '#/components/pages/NotFound'
 import { splashSkipScript } from '#/lib/splash-script'
 import { siteConfig } from '#/lib/seo'
+import { Toaster } from 'sonner'
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
@@ -74,6 +75,22 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           Ir para o conteúdo principal
         </a>
         {children}
+        <Toaster
+          theme="dark"
+          position="bottom-right"
+          richColors
+          closeButton
+          toastOptions={{
+            classNames: {
+              toast:
+                'bg-surface! border! border-white/10! text-white! shadow-2xl!',
+              title: 'text-white!',
+              description: 'text-muted!',
+              closeButton:
+                'bg-white/5! border-white/10! text-muted! hover:text-white!',
+            },
+          }}
+        />
         {import.meta.env.DEV && (
           <TanStackDevtools
             config={{

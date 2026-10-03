@@ -1,9 +1,13 @@
+import { useContactModal } from '#/components/contact/ContactModalProvider'
 import { GithubIcon } from '#/components/icons/GithubIcon'
 import { SectionHeading } from '#/components/ui/SectionHeading'
+import { cn } from '#/lib/cn'
 import { siteConfig } from '#/lib/seo'
-import { ArrowRight, FileText, Mail } from 'lucide-react'
+import { ArrowRight, FileText, Mail, MessageSquare } from 'lucide-react'
 
 export function Contact() {
+  const { openContactModal } = useContactModal()
+
   return (
     <section
       id="contato"
@@ -17,6 +21,21 @@ export function Contact() {
           title="Vamos conversar?"
           description="Estou aberto a novas oportunidades, projetos e parcerias. Entre em contato por um dos canais abaixo."
         />
+
+        <button
+          type="button"
+          onClick={openContactModal}
+          className={cn(
+            'mb-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 sm:w-auto',
+            'bg-primary text-base font-semibold text-white',
+            'shadow-[0_8px_28px_rgba(37,99,235,0.35)]',
+            'transition-colors hover:bg-primary-light',
+            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-light',
+          )}
+        >
+          <MessageSquare className="size-5" />
+          Enviar mensagem
+        </button>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {siteConfig.email && (
