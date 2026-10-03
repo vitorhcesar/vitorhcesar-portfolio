@@ -1,6 +1,5 @@
 export interface IProjectScreenshot {
   src: string
-  webpSrc?: string
   alt: string
 }
 
@@ -16,6 +15,25 @@ export interface IProject {
 interface IProjectsContent {
   description: string
   items: IProject[]
+}
+
+function buildScreenshots(slug: string, name: string, count: number): IProjectScreenshot[] {
+  const items: IProjectScreenshot[] = [
+    {
+      src: `/images/projects/${slug}/01.webp`,
+      alt: `Logo ${name}`,
+    },
+  ]
+
+  for (let i = 2; i <= count; i++) {
+    const num = String(i).padStart(2, '0')
+    items.push({
+      src: `/images/projects/${slug}/${num}.webp`,
+      alt: `${name} — captura ${i - 1}`,
+    })
+  }
+
+  return items
 }
 
 export const projectsContent: IProjectsContent = {
@@ -39,18 +57,7 @@ export const projectsContent: IProjectsContent = {
         'React Flow',
         'Stripe',
       ],
-      screenshots: [
-        {
-          src: '/images/projects/raytickets/01.png',
-          webpSrc: '/images/projects/raytickets/01.webp',
-          alt: 'Inbox de atendimento da Raytickets',
-        },
-        {
-          src: '/images/projects/raytickets/02.png',
-          webpSrc: '/images/projects/raytickets/02.webp',
-          alt: 'Editor visual de fluxos da Raytickets',
-        },
-      ],
+      screenshots: buildScreenshots('raytickets', 'Raytickets', 10),
       url: 'https://app.raytickets.com',
     },
     {
@@ -70,18 +77,7 @@ export const projectsContent: IProjectsContent = {
         'Stripe',
         'Docker',
       ],
-      screenshots: [
-        {
-          src: '/images/projects/planeja-post/01.png',
-          webpSrc: '/images/projects/planeja-post/01.webp',
-          alt: 'Painel de publicações do PlanejaPost',
-        },
-        {
-          src: '/images/projects/planeja-post/02.png',
-          webpSrc: '/images/projects/planeja-post/02.webp',
-          alt: 'Agendamento multi-plataforma do PlanejaPost',
-        },
-      ],
+      screenshots: buildScreenshots('planeja-post', 'PlanejaPost', 7),
       url: 'https://app.planejapost.com',
     },
     {
@@ -100,23 +96,7 @@ export const projectsContent: IProjectsContent = {
         'Stripe',
         'Docker',
       ],
-      screenshots: [
-        {
-          src: '/images/projects/astrofy/01.png',
-          webpSrc: '/images/projects/astrofy/01.webp',
-          alt: 'Interface principal da Astrofy',
-        },
-        {
-          src: '/images/projects/astrofy/02.png',
-          webpSrc: '/images/projects/astrofy/02.webp',
-          alt: 'Fluxo de automação da Astrofy',
-        },
-        {
-          src: '/images/projects/astrofy/03.png',
-          webpSrc: '/images/projects/astrofy/03.webp',
-          alt: 'Painel de configurações da Astrofy',
-        },
-      ],
+      screenshots: buildScreenshots('astrofy', 'Astrofy', 7),
       url: 'https://app.astrofy.site',
     },
     {
@@ -136,18 +116,7 @@ export const projectsContent: IProjectsContent = {
         'BullMQ',
         'Docker',
       ],
-      screenshots: [
-        {
-          src: '/images/projects/oasyfy/01.png',
-          webpSrc: '/images/projects/oasyfy/01.webp',
-          alt: 'Dashboard principal do Oasyfy',
-        },
-        {
-          src: '/images/projects/oasyfy/02.png',
-          webpSrc: '/images/projects/oasyfy/02.webp',
-          alt: 'Portal seller do Oasyfy',
-        },
-      ],
+      screenshots: buildScreenshots('oasyfy', 'Oasyfy', 7),
       url: 'https://app.oasyfyv2.com.br',
     },
   ] satisfies IProject[],

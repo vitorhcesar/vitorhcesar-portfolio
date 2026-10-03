@@ -52,7 +52,6 @@ export function ProjectGallery({ screenshots, projectName }: ProjectGalleryProps
             >
               <OptimizedImage
                 src={screenshot.src}
-                webpSrc={screenshot.webpSrc}
                 alt={screenshot.alt}
                 className="size-full object-cover object-top"
                 loading={index === 0 ? 'eager' : 'lazy'}
