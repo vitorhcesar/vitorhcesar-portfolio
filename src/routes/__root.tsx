@@ -15,10 +15,19 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Vitor Hugo — Desenvolvedor Full Stack',
+      },
+      {
+        name: 'description',
+        content:
+          'Portfólio de Vitor Hugo, desenvolvedor full stack com mais de 5 anos de experiência em aplicações web e mobile.',
       },
     ],
     links: [
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap',
+      },
       {
         rel: 'stylesheet',
         href: appCss,
@@ -30,11 +39,17 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
       </head>
-      <body>
+      <body className="bg-background text-white antialiased">
         {children}
         <TanStackDevtools
           config={{
