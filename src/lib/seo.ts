@@ -2,9 +2,9 @@ import { projects } from '#/lib/projects'
 
 export const siteConfig = {
   name: 'Vitor Hugo',
-  title: 'Vitor Hugo — Desenvolvedor Full Stack',
+  title: 'Vitor Hugo | Desenvolvedor Full Stack',
   description:
-    'Portfólio de Vitor Hugo, desenvolvedor full stack com mais de 5 anos de experiência em aplicações web e mobile modernas, escaláveis e de alta performance.',
+    'Portfólio de Vitor Hugo. Desenvolvimento web e mobile com React, Next.js e TypeScript. Mais de 5 anos de experiência.',
   locale: 'pt_BR',
   language: 'pt-BR',
   author: 'Vitor Hugo César',

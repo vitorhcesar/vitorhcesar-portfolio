@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vite dev --port 3000 --host",
     "generate-routes": "tsr generate",
+    "generate:og": "node scripts/generate-og-image.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint",
@@ -46,6 +47,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.20.0",
     "prettier": "^3.8.1",
+    "sharp": "^0.35.5",
     "typescript": "^6.0.2",
     "vite": "^8.0.0"
   },
