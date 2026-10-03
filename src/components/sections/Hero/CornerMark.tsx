@@ -1,13 +1,31 @@
+import { cn } from '#/lib/cn'
+import type { PropsWithChildren } from 'react'
+
 const lines = ['CÓDIGO', 'IDEIAS', 'RESULTADOS']
+
+function Line({ children }: PropsWithChildren) {
+  return (
+    <span className="text-[.75rem] font-bold tracking-[0.28em] text-[#9fd6ff]/70 uppercase">
+      {children}
+    </span>
+  )
+}
 
 export function CornerMark() {
   return (
-    <div className="absolute right-8 bottom-8 z-20 hidden flex-col items-end gap-2 lg:flex xl:right-12">
-      <div className="flex flex-col items-end gap-0.5 text-[10px] font-bold tracking-[0.28em] text-slate-400/70">
+    <div
+      className={cn(
+        'hidden',
+        'flex-col items-start gap-5 lg:flex',
+        'absolute right-8 bottom-8 z-20 xl:right-20',
+      )}
+    >
+      <div className="flex flex-col items-start gap-0.5">
         {lines.map((line) => (
-          <span key={line}>{line}</span>
+          <Line key={line}>{line}</Line>
         ))}
       </div>
+
       <div className="h-0.5 w-10 rounded-full bg-primary" />
     </div>
   )

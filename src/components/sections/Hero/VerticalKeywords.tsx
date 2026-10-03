@@ -1,17 +1,32 @@
-const keywords = ['WEB', 'MOBILE', 'APIs', 'BACKEND', 'FRONTEND']
+import { cn } from '#/lib/cn'
+
+const keywords: string[] = ['WEB', 'MOBILE', 'APIs', 'BACKEND', 'FRONTEND']
+
+function Keyword({ keyword }: { keyword: string }) {
+  return (
+    <span className="text-[.8rem] font-semibold tracking-[0.32em] text-[#9fd6ff]/80 uppercase">
+      {keyword}
+    </span>
+  )
+}
 
 export function VerticalKeywords() {
   return (
-    <div className="absolute top-[46%] right-5 z-20 hidden -translate-y-1/2 flex-col items-center gap-4 lg:flex xl:right-8">
-      <div className="h-14 w-px bg-primary/70" />
-      {keywords.map((keyword) => (
-        <span
-          key={keyword}
-          className="text-[10px] font-semibold tracking-[0.32em] text-slate-400/80 [writing-mode:vertical-lr]"
-        >
-          {keyword}
-        </span>
-      ))}
+    <div
+      className={cn(
+        'hidden',
+        'absolute top-[46%] right-5 z-20 xl:right-8',
+        '-translate-y-1/2',
+        'items-center gap-4 lg:flex',
+      )}
+    >
+      <div className="h-40 w-px bg-primary/70" />
+
+      <div className="flex flex-col items-start gap-3.5">
+        {keywords.map((keyword) => (
+          <Keyword key={keyword} keyword={keyword} />
+        ))}
+      </div>
     </div>
   )
 }
