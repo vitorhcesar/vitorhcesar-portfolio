@@ -140,7 +140,7 @@ export const projectsContent: IProjectsContent = {
         'Better Auth',
         'Tailwind CSS',
       ],
-      screenshots: buildScreenshots('vippets', 'VipPets', 1),
+      screenshots: buildScreenshots('vippets', 'VipPets', 4),
     },
   ] satisfies IProject[],
 } as const
