@@ -1,6 +1,8 @@
 import { FileText, Menu, X } from 'lucide-react'
-import { useState, type CSSProperties } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { GithubIcon } from '../icons/GithubIcon'
+
+const SCROLL_THRESHOLD = 48
 
 interface INavLink {
   label: string
@@ -39,12 +41,28 @@ function NavLink({
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLD)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const closeMenu = () => setIsMenuOpen(false)
 
   return (
     <header
-      className="hero-reveal-fade absolute top-0 right-0 left-0 z-50 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20"
+      className={`hero-reveal-fade fixed top-0 right-0 left-0 z-50 px-4 transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 sm:px-6 md:px-8 lg:px-12 xl:px-20 ${
+        isScrolled
+          ? 'border-b border-white/5 bg-background/75 shadow-lg shadow-black/10 backdrop-blur-md'
+          : 'border-b border-transparent bg-transparent'
+      }`}
       style={{ '--reveal-delay': '80ms' } as CSSProperties}
       onKeyDown={(event) => {
         if (event.key === 'Escape') closeMenu()
