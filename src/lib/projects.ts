@@ -17,7 +17,11 @@ interface IProjectsContent {
   items: IProject[]
 }
 
-function buildScreenshots(slug: string, name: string, count: number): IProjectScreenshot[] {
+function buildScreenshots(
+  slug: string,
+  name: string,
+  count: number,
+): IProjectScreenshot[] {
   const items: IProjectScreenshot[] = [
     {
       src: `/images/projects/${slug}/01.webp`,
@@ -44,7 +48,7 @@ export const projectsContent: IProjectsContent = {
       slug: 'raytickets',
       name: 'Raytickets',
       description:
-        'Como CEO, coordeno o desenvolvimento da Raytickets — plataforma SaaS B2B de atendimento, vendas e automação via WhatsApp. Inbox multiatendente em tempo real, CRM, campanhas, editor visual de fluxos, agentes de IA e billing integrado (Stripe/Mercado Pago).',
+        'Como CEO, coordeno o desenvolvimento da Raytickets, uma plataforma SaaS B2B de atendimento, vendas e automação via WhatsApp. Inbox multiatendente em tempo real, CRM, campanhas, editor visual de fluxos, agentes de IA e billing integrado (Stripe/Mercado Pago).',
       technologies: [
         'TanStack Start',
         'React',
@@ -64,7 +68,7 @@ export const projectsContent: IProjectsContent = {
       slug: 'planeja-post',
       name: 'PlanejaPost',
       description:
-        'Como sócio, coordeno o desenvolvimento do PlanejaPost — SaaS de agendamento e publicação multi-plataforma para criadores e agências. Conexão OAuth em 6 redes, workspaces, agendamento com filas, assinaturas com PIX e cartão, painel admin e landing SEO.',
+        'Como sócio, coordeno o desenvolvimento do PlanejaPost, um SaaS de agendamento e publicação multi-plataforma para criadores e agências. Conexão OAuth em 6 redes, workspaces, agendamento com filas, assinaturas com PIX e cartão, painel admin e landing SEO.',
       technologies: [
         'TanStack Start',
         'React',
@@ -84,7 +88,7 @@ export const projectsContent: IProjectsContent = {
       slug: 'astrofy',
       name: 'Astrofy',
       description:
-        'Desenvolvimento do frontend da Astrofy — plataforma SaaS de automação e gestão de bots (Telegram/Discord) com mais de 1000 usuários ativos. Editor visual de fluxos, checkouts, assinaturas, remarketing, afiliados e painel admin com arquitetura em camadas.',
+        'Desenvolvimento do frontend da Astrofy, uma plataforma SaaS de automação e gestão de bots (Telegram/Discord) com mais de 1000 usuários ativos. Editor visual de fluxos, checkouts, assinaturas, remarketing, afiliados e painel admin com arquitetura em camadas.',
       technologies: [
         'Next.js',
         'React',
@@ -103,7 +107,7 @@ export const projectsContent: IProjectsContent = {
       slug: 'oasyfy',
       name: 'Oasyfy',
       description:
-        'Desenvolvimento full stack do Oasyfy — gateway de pagamentos PIX com portais admin e seller, KYC, checkout personalizado, API gateway, webhooks, roteamento entre adquirentes e PWA com push notifications.',
+        'Desenvolvimento full stack do Oasyfy, um gateway de pagamentos PIX com portais admin e seller, KYC, checkout personalizado, API gateway, webhooks, roteamento entre adquirentes e PWA com push notifications.',
       technologies: [
         'React',
         'Vite',
@@ -118,6 +122,25 @@ export const projectsContent: IProjectsContent = {
       ],
       screenshots: buildScreenshots('oasyfy', 'Oasyfy', 7),
       url: 'https://app.oasyfyv2.com.br',
+    },
+    {
+      slug: 'vippets',
+      name: 'VipPets',
+      description:
+        'Projeto freelance desenvolvido do zero para a VIP Pets, uma plataforma de identificação para animais com cadastro conversacional via chat, página pública acessada por QR Code na coleira, geração de códigos e dashboard para gestão da produção das identificações físicas.',
+      technologies: [
+        'React',
+        'Vite',
+        'TypeScript',
+        'Hono',
+        'Bun',
+        'Prisma',
+        'PostgreSQL',
+        'MinIO',
+        'Better Auth',
+        'Tailwind CSS',
+      ],
+      screenshots: buildScreenshots('vippets', 'VipPets', 1),
     },
   ] satisfies IProject[],
 } as const
