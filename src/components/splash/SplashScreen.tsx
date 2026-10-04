@@ -66,7 +66,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     const splash = splashRef.current
     if (!splash) return
 
-    let introTimer: ReturnType<typeof setTimeout> | undefined
+    let introTimer: number | undefined
 
     const handleAnimationEnd = (event: AnimationEvent) => {
       if (event.animationName !== 'splash-exit') return

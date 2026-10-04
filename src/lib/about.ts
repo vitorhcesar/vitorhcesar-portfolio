@@ -20,11 +20,6 @@ export interface IAboutEducation {
   period?: string
 }
 
-interface IAboutHighlights {
-  title: string
-  description: string
-}
-
 interface IAboutLinks {
   github: string
   instagram: string

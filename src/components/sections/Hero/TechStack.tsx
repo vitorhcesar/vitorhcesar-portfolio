@@ -1,3 +1,5 @@
+import { cn } from '#/lib/cn'
+import { PlusIcon } from 'lucide-react'
 import type { CSSProperties } from 'react'
 
 interface ITechnology {
@@ -42,15 +44,13 @@ export function TechStack() {
 }
 
 function TechItem({ tech, index }: { tech: TechStackItem; index: number }) {
-  const isOthers = 'variant' in tech && tech.variant === 'others'
-
   return (
     <div
       className="hero-reveal-item group flex min-w-0 items-center gap-2"
       style={{ '--reveal-delay': `${760 + index * 50}ms` } as CSSProperties}
     >
       <div className="flex items-center justify-center text-muted transition-colors group-hover:text-white">
-        {isOthers ? <OthersIcon /> : <TechIcon src={tech.icon} />}
+        {'icon' in tech ? <TechIcon src={tech.icon} /> : <OthersIcon />}
       </div>
       <span className="truncate text-xs font-medium text-muted/70 sm:text-[.8rem] 2xl:text-[.9rem]">
         {tech.name}
@@ -63,9 +63,12 @@ function OthersIcon() {
   return (
     <span
       aria-hidden
-      className="flex size-7 shrink-0 items-center justify-center text-sm font-semibold sm:size-8 2xl:size-9"
+      className={cn(
+        'flex items-center justify-center shrink-0',
+        'text-lg font-semibold',
+      )}
     >
-      +
+      <PlusIcon />
     </span>
   )
 }
