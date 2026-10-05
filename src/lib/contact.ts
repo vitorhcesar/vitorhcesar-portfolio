@@ -3,7 +3,7 @@ import { siteConfig } from '#/lib/seo'
 import { getGithubUsername } from '#/lib/social-avatars'
 
 export type ContactChannelType =
-  'email' | 'github' | 'instagram' | 'linkedin' | 'resume'
+  'email' | 'github' | 'instagram' | 'tiktok' | 'youtube' | 'linkedin' | 'resume'
 
 export interface ContactChannel {
   type: ContactChannelType
@@ -51,6 +51,22 @@ function buildChannels(): ContactChannel[] {
     label: 'Instagram',
     description: `@${siteConfig.instagramHandle}`,
     href: aboutContent.links.instagram,
+    external: true,
+  })
+
+  channels.push({
+    type: 'tiktok',
+    label: 'TikTok',
+    description: `@${siteConfig.instagramHandle}`,
+    href: aboutContent.links.tiktok,
+    external: true,
+  })
+
+  channels.push({
+    type: 'youtube',
+    label: 'YouTube',
+    description: 'Assista ao canal',
+    href: aboutContent.links.youtube,
     external: true,
   })
 

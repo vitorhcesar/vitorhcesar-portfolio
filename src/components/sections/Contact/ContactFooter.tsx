@@ -1,5 +1,7 @@
 import { GithubIcon } from '#/components/icons/GithubIcon'
 import { InstagramIcon } from '#/components/icons/InstagramIcon'
+import { TikTokIcon } from '#/components/icons/TikTokIcon'
+import { YouTubeIcon } from '#/components/icons/YouTubeIcon'
 import { LinkedInIcon } from '#/components/icons/LinkedInIcon'
 import { aboutContent } from '#/lib/about'
 import { contactContent } from '#/lib/contact'
@@ -13,6 +15,16 @@ const socialLinks = [
     label: 'Instagram',
     href: aboutContent.links.instagram,
     icon: <InstagramIcon />,
+  },
+  {
+    label: 'TikTok',
+    href: aboutContent.links.tiktok,
+    icon: <TikTokIcon />,
+  },
+  {
+    label: 'YouTube',
+    href: aboutContent.links.youtube,
+    icon: <YouTubeIcon />,
   },
   ...(aboutContent.links.linkedin
     ? [

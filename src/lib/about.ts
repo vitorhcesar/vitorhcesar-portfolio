@@ -23,6 +23,8 @@ export interface IAboutEducation {
 interface IAboutLinks {
   github: string
   instagram: string
+  tiktok: string
+  youtube: string
   cv: string
   linkedin: string
 }
@@ -140,6 +142,8 @@ export const aboutContent: IAboutContent = {
   links: {
     github: siteConfig.github,
     instagram: siteConfig.instagram,
+    tiktok: siteConfig.tiktok,
+    youtube: siteConfig.youtube,
     cv: siteConfig.resume,
     linkedin: siteConfig.linkedin ?? '',
   },

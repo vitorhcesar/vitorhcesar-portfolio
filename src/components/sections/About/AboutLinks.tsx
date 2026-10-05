@@ -1,5 +1,7 @@
 import { GithubIcon } from '#/components/icons/GithubIcon'
 import { InstagramIcon } from '#/components/icons/InstagramIcon'
+import { TikTokIcon } from '#/components/icons/TikTokIcon'
+import { YouTubeIcon } from '#/components/icons/YouTubeIcon'
 import { LinkedInIcon } from '#/components/icons/LinkedInIcon'
 import { aboutContent } from '#/lib/about'
 import { cn } from '#/lib/cn'
@@ -34,6 +36,22 @@ const links: AboutLinkItem[] = [
     href: aboutContent.links.instagram,
     icon: <InstagramIcon />,
     labelIcon: <InstagramIcon />,
+    avatarUrl: siteConfig.socialAvatar,
+  },
+  {
+    label: 'TikTok',
+    description: `@${siteConfig.instagramHandle}`,
+    href: aboutContent.links.tiktok,
+    icon: <TikTokIcon />,
+    labelIcon: <TikTokIcon />,
+    avatarUrl: siteConfig.socialAvatar,
+  },
+  {
+    label: 'YouTube',
+    description: 'Assista ao canal',
+    href: aboutContent.links.youtube,
+    icon: <YouTubeIcon />,
+    labelIcon: <YouTubeIcon />,
     avatarUrl: siteConfig.socialAvatar,
   },
 ]

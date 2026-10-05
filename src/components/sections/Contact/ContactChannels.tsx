@@ -1,5 +1,7 @@
 import { GithubIcon } from '#/components/icons/GithubIcon'
 import { InstagramIcon } from '#/components/icons/InstagramIcon'
+import { TikTokIcon } from '#/components/icons/TikTokIcon'
+import { YouTubeIcon } from '#/components/icons/YouTubeIcon'
 import { LinkedInIcon } from '#/components/icons/LinkedInIcon'
 import {
   contactChannels,
@@ -22,6 +24,10 @@ function getChannelIcon(type: ContactChannelType): ReactNode {
       return <GithubIcon />
     case 'instagram':
       return <InstagramIcon />
+    case 'tiktok':
+      return <TikTokIcon />
+    case 'youtube':
+      return <YouTubeIcon />
     case 'linkedin':
       return <LinkedInIcon />
     case 'resume':

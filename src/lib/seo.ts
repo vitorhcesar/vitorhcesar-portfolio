@@ -25,6 +25,8 @@ export const siteConfig = {
   github: 'https://github.com/vitorhcesar',
   instagram: 'https://instagram.com/vitorhugo.cesar',
   instagramHandle: 'vitorhugo.cesar',
+  tiktok: 'https://www.tiktok.com/@vitorhugo.cesar',
+  youtube: 'https://www.youtube.com/channel/UCclIxi_q5k_I_En-TePw9KA',
   socialAvatar: '/images/social-avatar.webp',
   linkedin: import.meta.env.VITE_LINKEDIN_URL as string | undefined,
   email: import.meta.env.VITE_CONTACT_EMAIL as string | undefined,
@@ -37,7 +39,13 @@ export function absoluteUrl(path: string) {
 }
 
 function getSameAsLinks() {
-  return [siteConfig.github, siteConfig.instagram, siteConfig.linkedin].filter(
+  return [
+    siteConfig.github,
+    siteConfig.instagram,
+    siteConfig.tiktok,
+    siteConfig.youtube,
+    siteConfig.linkedin,
+  ].filter(
     Boolean,
   ) as string[]
 }
