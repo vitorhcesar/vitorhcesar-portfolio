@@ -152,7 +152,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-[60] flex items-end justify-center lg:items-center lg:p-6"
       role="presentation"
     >
       <div
@@ -180,14 +180,19 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         aria-labelledby="contact-modal-title"
         aria-describedby="contact-modal-description"
         className={cn(
-          'contact-modal-panel relative z-10 w-full max-w-xl overflow-hidden',
+          'contact-modal-panel relative z-10 flex w-full max-w-xl flex-col overflow-hidden',
+          'max-h-[92dvh] lg:max-h-none',
           isVisible && 'is-visible',
-          'rounded-3xl border border-white/10',
+          'rounded-t-3xl border border-white/10 lg:rounded-3xl',
           'bg-linear-to-b from-surface/98 to-background/98',
           'shadow-[0_24px_80px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.04)_inset]',
           'backdrop-blur-2xl',
         )}
       >
+        <div
+          aria-hidden
+          className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-white/20 lg:hidden"
+        />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"
@@ -197,7 +202,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           className="pointer-events-none absolute -top-24 left-1/2 h-48 w-72 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl"
         />
 
-        <div className="relative border-b border-white/5 px-6 pt-6 pb-5 sm:px-8 sm:pt-8">
+        <div className="relative shrink-0 border-b border-white/5 px-6 pt-4 pb-5 sm:px-8 sm:pt-6 lg:pt-8">
           <button
             type="button"
             onClick={handleClose}
@@ -238,7 +243,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         <form
           onSubmit={handleSubmit}
           autoComplete="on"
-          className="relative space-y-5 px-6 py-6 sm:px-8 sm:py-7"
+          className="relative flex-1 space-y-5 overflow-y-auto px-6 py-6 sm:px-8 sm:py-7"
         >
           <div>
             <FieldLabel htmlFor="contact-name">Nome</FieldLabel>
