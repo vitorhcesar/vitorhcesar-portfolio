@@ -156,7 +156,11 @@ export const projectsContent: IProjectsContent = {
         'Tailwind CSS',
         'Vercel Analytics',
       ],
-      screenshots: buildScreenshots('claudia-cesar', 'Psicóloga Claudia Cesar', 1),
+      screenshots: buildScreenshots(
+        'claudia-cesar',
+        'Psicóloga Claudia Cesar',
+        7,
+      ),
       url: 'https://psicologa-claudia-cesar.com.br',
     },
   ] satisfies IProject[],

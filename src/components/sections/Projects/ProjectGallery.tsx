@@ -100,8 +100,7 @@ export function ProjectGallery({
                 'rounded-none border-y border-white/10 lg:rounded-2xl lg:border',
               )
             : cn(
-                'px-2 py-3 sm:px-3 sm:py-4',
-                'lg:rounded-2xl lg:border lg:border-white/10 lg:bg-[#071422]/20',
+                'lg:rounded-2xl lg:border lg:border-white/10 lg:bg-[#071422]/20 lg:px-3 lg:py-4',
               ),
           'shadow-[0_0_40px_rgba(37,99,235,0.08)]',
           'group-hover/gallery:border-primary/20 group-hover/gallery:shadow-[0_0_60px_rgba(37,99,235,0.12)]',
@@ -111,22 +110,26 @@ export function ProjectGallery({
           className={cn(
             'relative w-full',
             isPresentationActive
-              ? 'size-full'
-              : 'min-h-[11.5rem] sm:min-h-[12.5rem]',
+              ? 'aspect-video min-h-[11.5rem] sm:min-h-[12.5rem]'
+              : 'lg:min-h-[12.5rem]',
           )}
         >
           {screenshots.map((screenshot, index) => {
             const isPresentation = isPresentationSlide(index)
+            const isActive = index === activeIndex
 
             return (
               <div
                 key={screenshot.src}
                 className={cn(
-                  'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
-                  index === activeIndex ? 'opacity-100' : 'pointer-events-none opacity-0',
-                  !isPresentation && 'flex items-center justify-center p-1 sm:p-2',
+                  'transition-opacity duration-500 motion-reduce:transition-none',
+                  isActive
+                    ? 'relative z-[1] opacity-100 lg:absolute lg:inset-0'
+                    : 'pointer-events-none absolute inset-x-0 top-0 opacity-0 lg:inset-0',
+                  isPresentationActive && isActive && 'size-full',
+                  !isPresentation && 'flex items-center justify-center lg:p-2',
                 )}
-                aria-hidden={index !== activeIndex}
+                aria-hidden={!isActive}
               >
                 {isPresentation ? (
                   <>
@@ -161,33 +164,33 @@ export function ProjectGallery({
               type="button"
               onClick={goPrev}
               className={cn(
-                'absolute top-1/2 left-2 z-10 -translate-y-1/2 rounded-full border border-white/10 bg-[#071422]/80 p-2.5 text-white backdrop-blur-md sm:left-3',
+                'absolute top-1/2 left-2 z-10 -translate-y-1/2 rounded-full border border-white/10 bg-[#071422]/70 p-2 text-white backdrop-blur-md sm:left-3 sm:p-2.5',
                 'opacity-100 transition-all duration-300 lg:opacity-0 lg:group-hover/gallery:opacity-100',
                 'hover:border-primary/30 hover:bg-[#071422] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
               )}
               aria-label="Screenshot anterior"
             >
-              <ChevronLeft className="size-5" aria-hidden="true" />
+              <ChevronLeft className="size-4 sm:size-5" aria-hidden="true" />
             </button>
 
             <button
               type="button"
               onClick={goNext}
               className={cn(
-                'absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded-full border border-white/10 bg-[#071422]/80 p-2.5 text-white backdrop-blur-md sm:right-3',
+                'absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded-full border border-white/10 bg-[#071422]/70 p-2 text-white backdrop-blur-md sm:right-3 sm:p-2.5',
                 'opacity-100 transition-all duration-300 lg:opacity-0 lg:group-hover/gallery:opacity-100',
                 'hover:border-primary/30 hover:bg-[#071422] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
               )}
               aria-label="Próximo screenshot"
             >
-              <ChevronRight className="size-5" aria-hidden="true" />
+              <ChevronRight className="size-4 sm:size-5" aria-hidden="true" />
             </button>
           </>
         )}
       </div>
 
       {hasMultiple && (
-        <div className="mt-3 flex items-center justify-between gap-4 px-4 sm:mt-4 sm:px-0">
+        <div className="mt-3 flex items-center justify-between gap-4 px-4 sm:mt-4 lg:px-0">
           <p className="sr-only" aria-live="polite">
             {activeScreenshot.alt} — {activeIndex + 1} de {screenshots.length}
           </p>
