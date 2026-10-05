@@ -43,9 +43,9 @@ const GO_SNIPPETS = [
 
 const CODE_CHARS = '{}[]()=></;:'
 
-const SPAWN_Y_MIN = 0.1
-const SPAWN_Y_MAX = 0.52
-const SPAWN_Y_IMMEDIATE_MAX = 0.68
+const SPAWN_Y_MIN = 0.42
+const SPAWN_Y_MAX = 0.72
+const SPAWN_Y_IMMEDIATE_MAX = 0.82
 
 type Lang = 'ts' | 'py' | 'go'
 
@@ -98,9 +98,9 @@ function createParticle(width: number, height: number, immediate = false): Parti
   const spawnY = height * randomBetween(SPAWN_Y_MIN, spawnYMax)
 
   const angle = randomBetween(-Math.PI * 0.95, -Math.PI * 0.12)
-  const speed = randomBetween(1.1, 2.4)
+  const speed = randomBetween(0.35, 0.75)
 
-  const maxLife = randomBetween(65, 120)
+  const maxLife = randomBetween(120, 200)
 
   const traveled = immediate ? randomBetween(0, maxLife * 0.8) : 0
   const startY = spawnY + Math.sin(angle) * speed * 1.2 * traveled * -0.35
@@ -155,7 +155,7 @@ export function HeroCodeEffect() {
       canvas.style.height = `${height}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-      const count = Math.min(175, Math.max(95, Math.floor(width / 4.5)))
+      const count = Math.min(36, Math.max(18, Math.floor(width / 20)))
       particles = Array.from({ length: count }, () => createParticle(width, height, true))
     }
 
@@ -164,14 +164,14 @@ export function HeroCodeEffect() {
     }
 
     const drawGlow = (time: number) => {
-      const pulse = 0.72 + Math.sin(time * 0.0018) * 0.22
+      const pulse = 0.55 + Math.sin(time * 0.0012) * 0.12
       const cx = width * 0.5
-      const cy = height * 0.38
+      const cy = height * 0.54
       const radius = Math.min(width, height) * 0.52
 
       const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius)
-      gradient.addColorStop(0, `rgba(37, 99, 235, ${0.34 * pulse})`)
-      gradient.addColorStop(0.4, `rgba(59, 130, 246, ${0.22 * pulse})`)
+      gradient.addColorStop(0, `rgba(37, 99, 235, ${0.16 * pulse})`)
+      gradient.addColorStop(0.4, `rgba(59, 130, 246, ${0.1 * pulse})`)
       gradient.addColorStop(1, 'rgba(37, 99, 235, 0)')
 
       ctx.fillStyle = gradient
@@ -180,25 +180,25 @@ export function HeroCodeEffect() {
 
     const drawParticle = (particle: Particle) => {
       const progress = particle.life / particle.maxLife
-      const fadeIn = Math.min(particle.life / 10, 1)
-      const fadeOut = progress > 0.78 ? 1 - (progress - 0.78) / 0.22 : 1
-      const baseOpacity = particle.kind === 'snippet' ? 1 : 0.92
+      const fadeIn = Math.min(particle.life / 18, 1)
+      const fadeOut = progress > 0.82 ? 1 - (progress - 0.82) / 0.18 : 1
+      const baseOpacity = particle.kind === 'snippet' ? 0.48 : 0.38
       const opacity = fadeIn * fadeOut * baseOpacity
 
       if (opacity <= 0.02) return
 
       const distFromCenter = Math.abs(particle.x - width * 0.5) / (width * 0.5)
-      const edgeBoost = 0.9 + distFromCenter * 0.1
+      const edgeBoost = 0.72 + distFromCenter * 0.18
 
       const hue = LANG_HUE[particle.lang]
-      const lightness = particle.kind === 'snippet' ? 78 : 74
+      const lightness = particle.kind === 'snippet' ? 68 : 64
 
       ctx.save()
-      ctx.globalAlpha = Math.min(1, opacity * edgeBoost)
-      ctx.font = `600 ${particle.size}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`
-      ctx.fillStyle = `hsla(${hue}, 92%, ${lightness}%, 1)`
-      ctx.shadowColor = `hsla(${hue}, 95%, 65%, 0.85)`
-      ctx.shadowBlur = particle.kind === 'snippet' ? 14 : 11
+      ctx.globalAlpha = Math.min(0.65, opacity * edgeBoost)
+      ctx.font = `500 ${particle.size}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`
+      ctx.fillStyle = `hsla(${hue}, 78%, ${lightness}%, 1)`
+      ctx.shadowColor = `hsla(${hue}, 80%, 58%, 0.35)`
+      ctx.shadowBlur = particle.kind === 'snippet' ? 6 : 4
       ctx.fillText(particle.text, particle.x, particle.y)
       ctx.restore()
     }
@@ -217,7 +217,7 @@ export function HeroCodeEffect() {
         particle.life += delta
         particle.x += particle.vx * delta
         particle.y += particle.vy * delta
-        particle.vx += (Math.random() - 0.5) * 0.02 * delta
+        particle.vx += (Math.random() - 0.5) * 0.008 * delta
 
         if (particle.life >= particle.maxLife || particle.y < -30) {
           resetParticle(particle)
@@ -254,12 +254,12 @@ export function HeroCodeEffect() {
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="pointer-events-none absolute -inset-x-[26%] -top-[30%] -bottom-[2%] overflow-visible"
+      className="pointer-events-none absolute -inset-x-[22%] -top-[14%] -bottom-[6%] overflow-visible"
       style={{
         maskImage:
-          'radial-gradient(ellipse 74% 84% at 50% 38%, transparent 8%, rgba(0,0,0,0.55) 32%, black 72%, transparent 100%)',
+          'radial-gradient(ellipse 70% 80% at 50% 52%, transparent 10%, rgba(0,0,0,0.6) 34%, black 70%, transparent 100%)',
         WebkitMaskImage:
-          'radial-gradient(ellipse 74% 84% at 50% 38%, transparent 8%, rgba(0,0,0,0.55) 32%, black 72%, transparent 100%)',
+          'radial-gradient(ellipse 70% 80% at 50% 52%, transparent 10%, rgba(0,0,0,0.6) 34%, black 70%, transparent 100%)',
       }}
     >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />

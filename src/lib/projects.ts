@@ -144,6 +144,21 @@ export const projectsContent: IProjectsContent = {
       screenshots: buildScreenshots('vippets', 'VipPets', 4),
       addressBar: 'anonimo',
     },
+    {
+      slug: 'claudia-cesar',
+      name: 'Psicóloga Claudia Cesar',
+      description:
+        'Landing page desenvolvida para a psicóloga Claudia Cesar, com foco em conversão e SEO. Apresentação dos serviços de terapia individual e de casal, seções de acolhimento e processo terapêutico, integração com agendamento online e identidade visual refinada com tipografia serifada.',
+      technologies: [
+        'Next.js',
+        'React',
+        'TypeScript',
+        'Tailwind CSS',
+        'Vercel Analytics',
+      ],
+      screenshots: buildScreenshots('claudia-cesar', 'Psicóloga Claudia Cesar', 1),
+      url: 'https://psicologa-claudia-cesar.com.br',
+    },
   ] satisfies IProject[],
 } as const
 
