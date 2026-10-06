@@ -1,6 +1,8 @@
 import { FileText, Menu, X } from 'lucide-react'
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useActiveSection } from '#/hooks/useActiveSection'
+import { siteConfig } from '#/lib/seo'
+import { isCurriculumMode } from '#/lib/site-mode'
 import { GithubIcon } from '../icons/GithubIcon'
 
 const SCROLL_THRESHOLD = 48
@@ -10,12 +12,16 @@ interface INavLink {
   href: string
 }
 
-const navLinks: INavLink[] = [
+const baseNavLinks: INavLink[] = [
   { label: 'Início', href: '#inicio' },
   { label: 'Sobre', href: '#sobre' },
   { label: 'Projetos', href: '#projetos' },
   { label: 'Contato', href: '#contato' },
 ]
+
+const navLinks = isCurriculumMode()
+  ? baseNavLinks.filter((link) => link.href !== '#contato')
+  : baseNavLinks
 
 const sectionIds = navLinks.map((link) => link.href.slice(1))
 
@@ -102,25 +108,29 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-2.5">
-          <a
-            href="/vitor-cesar-pt.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Abrir currículo em PDF"
-            className="flex size-10 items-center justify-center gap-2 rounded-full border border-white/30 text-[.9rem] font-medium text-white transition-colors hover:border-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:w-auto lg:px-4"
-          >
-            <FileText className="size-4" />
-            <span className="hidden lg:inline">Currículo</span>
-          </a>
-          <a
-            href="https://github.com/vitorhcesar"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="flex size-10 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:border-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
-            <GithubIcon />
-          </a>
+          {!isCurriculumMode() && (
+            <>
+              <a
+                href={siteConfig.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Abrir currículo em PDF"
+                className="flex size-10 items-center justify-center gap-2 rounded-full border border-white/30 text-[.9rem] font-medium text-white transition-colors hover:border-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:w-auto lg:px-4"
+              >
+                <FileText className="size-4" />
+                <span className="hidden lg:inline">Currículo</span>
+              </a>
+              <a
+                href={siteConfig.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="flex size-10 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:border-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                <GithubIcon />
+              </a>
+            </>
+          )}
           <button
             type="button"
             aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}

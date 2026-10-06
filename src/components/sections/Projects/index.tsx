@@ -1,12 +1,15 @@
+import { FooterText } from '#/components/layout/FooterText'
 import { SectionHeading } from '#/components/ui/SectionHeading'
 import { useProjectsActiveSlug } from '#/hooks/useProjectsActiveSlug'
 import { projectsContent } from '#/lib/projects'
+import { isCurriculumMode } from '#/lib/site-mode'
 import { SectionReveal } from '../About/SectionReveal'
 import { ProjectShowcase } from './ProjectShowcase'
 import { ProjectsBackground } from './ProjectsBackground'
 import { ProjectsCornerMark } from './ProjectsCornerMark'
 
 export function Projects() {
+  const curriculumMode = isCurriculumMode()
   const { activeSlug, updateRatio } = useProjectsActiveSlug()
 
   return (
@@ -40,6 +43,15 @@ export function Projects() {
             </SectionReveal>
           ))}
         </div>
+
+        {curriculumMode && (
+          <SectionReveal
+            delay={240}
+            className="mt-16 flex w-full flex-col items-center border-t border-white/5 pt-10 lg:mt-20"
+          >
+            <FooterText />
+          </SectionReveal>
+        )}
       </div>
     </section>
   )

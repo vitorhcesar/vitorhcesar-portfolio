@@ -1,4 +1,5 @@
 import { projects } from '#/lib/projects'
+import { isCurriculumMode } from '#/lib/site-mode'
 
 export const siteConfig = {
   name: 'Vitor Hugo',
@@ -39,15 +40,17 @@ export function absoluteUrl(path: string) {
 }
 
 function getSameAsLinks() {
+  if (isCurriculumMode()) {
+    return []
+  }
+
   return [
     siteConfig.github,
     siteConfig.instagram,
     siteConfig.tiktok,
     siteConfig.youtube,
     siteConfig.linkedin,
-  ].filter(
-    Boolean,
-  ) as string[]
+  ].filter(Boolean) as string[]
 }
 
 type MetaTag = {
@@ -101,7 +104,7 @@ export function createPageMeta({
     { name: 'twitter:image:alt', content: `${siteConfig.name} — Desenvolvedor Full Stack` },
   ]
 
-  if (siteConfig.twitterHandle) {
+  if (siteConfig.twitterHandle && !isCurriculumMode()) {
     meta.push({ name: 'twitter:creator', content: siteConfig.twitterHandle })
   }
 
@@ -136,7 +139,7 @@ export function createPersonJsonLd() {
     ],
   }
 
-  if (siteConfig.email) {
+  if (siteConfig.email && !isCurriculumMode()) {
     person.email = siteConfig.email
   }
 

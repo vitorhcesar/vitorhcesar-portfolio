@@ -13,6 +13,7 @@ import {
   createPersonJsonLd,
   jsonLdScript,
 } from '#/lib/seo'
+import { isCurriculumMode } from '#/lib/site-mode'
 
 export const Route = createFileRoute('/')({
   head: () => {
@@ -29,6 +30,7 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   const [showSplashPrompt, setShowSplashPrompt] = useState(false)
+  const curriculumMode = isCurriculumMode()
 
   return (
     <ContactModalProvider>
@@ -40,7 +42,7 @@ function Home() {
           <Hero />
           <About />
           <Projects />
-          <Contact />
+          {!curriculumMode && <Contact />}
         </main>
       </div>
     </ContactModalProvider>

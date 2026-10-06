@@ -7,6 +7,7 @@ import { aboutContent } from '#/lib/about'
 import { cn } from '#/lib/cn'
 import { getGithubUsername } from '#/lib/social-avatars'
 import { siteConfig } from '#/lib/seo'
+import { isCurriculumMode } from '#/lib/site-mode'
 import { ArrowRight, FileText } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { SectionReveal } from './SectionReveal'
@@ -88,6 +89,10 @@ function LabelWithIcon({ label, labelIcon }: { label: string; labelIcon?: ReactN
 }
 
 export function AboutLinks() {
+  if (isCurriculumMode()) {
+    return null
+  }
+
   return (
     <SectionReveal delay={200} className="mt-10 lg:mt-14">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

@@ -1,5 +1,6 @@
 import { aboutContent } from '#/lib/about'
 import { siteConfig } from '#/lib/seo'
+import { isCurriculumMode } from '#/lib/site-mode'
 import { getGithubUsername } from '#/lib/social-avatars'
 
 export type ContactChannelType =
@@ -26,6 +27,10 @@ export const contactContent = {
 } as const
 
 function buildChannels(): ContactChannel[] {
+  if (isCurriculumMode()) {
+    return []
+  }
+
   const channels: ContactChannel[] = []
 
   if (siteConfig.email) {

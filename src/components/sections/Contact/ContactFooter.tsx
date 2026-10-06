@@ -3,10 +3,9 @@ import { InstagramIcon } from '#/components/icons/InstagramIcon'
 import { TikTokIcon } from '#/components/icons/TikTokIcon'
 import { YouTubeIcon } from '#/components/icons/YouTubeIcon'
 import { LinkedInIcon } from '#/components/icons/LinkedInIcon'
+import { FooterText } from '#/components/layout/FooterText'
 import { aboutContent } from '#/lib/about'
-import { contactContent } from '#/lib/contact'
 import { cn } from '#/lib/cn'
-import { siteConfig } from '#/lib/seo'
 import { SectionReveal } from '../About/SectionReveal'
 
 const socialLinks = [
@@ -38,21 +37,13 @@ const socialLinks = [
 ]
 
 export function ContactFooter() {
-  const year = new Date().getFullYear()
-
   return (
-    <SectionReveal delay={240} className="mt-16 border-t border-white/5 pt-10 lg:mt-20">
-      <div
-        className={cn(
-          'flex flex-col items-center justify-between gap-6 sm:flex-row',
-        )}
-      >
-        <div className="text-center sm:text-left">
-          <p className="text-sm text-muted">
-            © {year} {siteConfig.name}. Todos os direitos reservados.
-          </p>
-          <p className="mt-1 text-xs text-muted/70">{contactContent.footerTagline}</p>
-        </div>
+    <SectionReveal
+      delay={240}
+      className="mt-16 border-t border-white/5 pt-10 lg:mt-20"
+    >
+      <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+        <FooterText className="sm:text-left" />
 
         <div className="flex items-center gap-3">
           {socialLinks.map((link) => (

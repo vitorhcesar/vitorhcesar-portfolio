@@ -3,6 +3,7 @@ import { json } from '@tanstack/react-start'
 import { contactFormSchema } from '#/lib/contact-schema'
 import { checkRateLimit } from '#/lib/rate-limit'
 import { sendContactEmail } from '#/lib/smtp'
+import { isCurriculumModeServer } from '#/lib/site-mode'
 
 function clientKey(request: Request): string {
   const forwarded = request.headers.get('x-forwarded-for')
@@ -16,6 +17,13 @@ export const Route = createFileRoute('/api/contact')({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        if (isCurriculumModeServer()) {
+          return json(
+            { error: 'Formulário de contato desabilitado no modo currículo.' },
+            { status: 403 },
+          )
+        }
+
         const limit = checkRateLimit(`contact:${clientKey(request)}`)
         if (!limit.allowed) {
           return json(

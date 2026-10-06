@@ -1,4 +1,5 @@
 import { ContactModal } from '#/components/contact/ContactModal'
+import { isCurriculumMode } from '#/lib/site-mode'
 import { createContext, useCallback, useContext, useState } from 'react'
 
 interface ContactModalContextValue {
@@ -13,9 +14,14 @@ export function ContactModalProvider({
 }: {
   children: React.ReactNode
 }) {
+  const curriculumMode = isCurriculumMode()
   const [isOpen, setIsOpen] = useState(false)
 
-  const openContactModal = useCallback(() => setIsOpen(true), [])
+  const openContactModal = useCallback(() => {
+    if (!curriculumMode) {
+      setIsOpen(true)
+    }
+  }, [curriculumMode])
   const closeContactModal = useCallback(() => setIsOpen(false), [])
 
   return (
@@ -23,7 +29,9 @@ export function ContactModalProvider({
       value={{ openContactModal, closeContactModal }}
     >
       {children}
-      <ContactModal isOpen={isOpen} onClose={closeContactModal} />
+      {!curriculumMode && (
+        <ContactModal isOpen={isOpen} onClose={closeContactModal} />
+      )}
     </ContactModalContext.Provider>
   )
 }
