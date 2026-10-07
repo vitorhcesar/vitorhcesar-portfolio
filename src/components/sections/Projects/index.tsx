@@ -26,7 +26,7 @@ export function Projects() {
           <SectionHeading
             label="// Projetos"
             titleId="projetos-titulo"
-            title="O que eu construo"
+            title="O que eu construo?"
             description={projectsContent.description}
           />
         </SectionReveal>
