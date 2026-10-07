@@ -1,3 +1,9 @@
+import {
+  contactFormSchema,
+  parseContactFieldErrors,
+  type ContactFieldErrors,
+  type ContactFieldName,
+} from '#/lib/contact-schema'
 import { cn } from '#/lib/cn'
 import { formatMobilePhoneMask } from '#/lib/phone-mask'
 import { Loader2, Mail, Send, X } from 'lucide-react'
@@ -5,6 +11,14 @@ import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 type SubmitStatus = 'idle' | 'loading'
+
+interface ContactApiErrorBody {
+  error?: string
+  details?: {
+    fieldErrors?: Record<string, string[]>
+    formErrors?: string[]
+  }
+}
 
 interface ContactModalProps {
   isOpen: boolean
@@ -38,11 +52,39 @@ function FieldLabel({
   )
 }
 
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null
+
+  return (
+    <p id={id} role="alert" className="mt-1.5 text-xs text-red-400">
+      {message}
+    </p>
+  )
+}
+
+const fieldInputClassName = cn(
+  'w-full rounded-xl border bg-background/60 px-4 py-3',
+  'text-sm text-white placeholder:text-muted/70',
+  'transition-all focus:bg-background/80 focus:outline-none focus:ring-2',
+  'disabled:cursor-not-allowed disabled:opacity-60',
+)
+
+function getFieldInputClassName(hasError: boolean) {
+  return cn(
+    fieldInputClassName,
+    hasError
+      ? 'border-red-400/50 focus:border-red-400/60 focus:ring-red-400/15'
+      : 'border-white/10 focus:border-primary/40 focus:ring-primary/15',
+  )
+}
+
 export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const panelRef = useRef<HTMLDivElement>(null)
   const [isRendered, setIsRendered] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [formState, setFormState] = useState(initialFormState)
+  const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({})
+  const [formError, setFormError] = useState<string | null>(null)
   const [status, setStatus] = useState<SubmitStatus>('idle')
 
   useEffect(() => {
@@ -70,6 +112,8 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   useEffect(() => {
     if (!isOpen && !isRendered) {
       setFormState(initialFormState)
+      setFieldErrors({})
+      setFormError(null)
       setStatus('idle')
     }
   }, [isOpen, isRendered])
@@ -100,41 +144,108 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     onClose()
   }
 
+  function clearFieldError(field: ContactFieldName) {
+    setFieldErrors((prev) => {
+      if (!prev[field]) return prev
+      const next = { ...prev }
+      delete next[field]
+      return next
+    })
+  }
+
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
-    setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+
+    if (
+      name === 'name' ||
+      name === 'email' ||
+      name === 'phone' ||
+      name === 'reason'
+    ) {
+      clearFieldError(name)
+    }
+
+    setFormError(null)
+    setFormState((prev) => ({ ...prev, [name]: value }))
   }
 
   function handlePhoneChange(e: React.ChangeEvent<HTMLInputElement>) {
+    clearFieldError('phone')
+    setFormError(null)
     setFormState((prev) => ({
       ...prev,
       phone: formatMobilePhoneMask(e.target.value),
     }))
   }
 
+  function focusFirstInvalidField(errors: ContactFieldErrors) {
+    const firstField = (['name', 'email', 'phone', 'reason'] as const).find(
+      (field) => errors[field],
+    )
+
+    if (!firstField) return
+
+    panelRef.current
+      ?.querySelector<HTMLElement>(`#contact-${firstField}`)
+      ?.focus()
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (status === 'loading') return
 
+    const parsed = contactFormSchema.safeParse(formState)
+    if (!parsed.success) {
+      const errors = parseContactFieldErrors(parsed.error.flatten())
+      setFieldErrors(errors)
+      setFormError(null)
+      focusFirstInvalidField(errors)
+      return
+    }
+
+    setFieldErrors({})
+    setFormError(null)
     setStatus('loading')
 
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formState),
+        body: JSON.stringify(parsed.data),
       })
 
       if (!response.ok) {
+        let body: ContactApiErrorBody | null = null
+        try {
+          body = (await response.json()) as ContactApiErrorBody
+        } catch {
+          body = null
+        }
+
+        if (response.status === 400 && body?.details) {
+          const errors = parseContactFieldErrors({
+            formErrors: body.details.formErrors ?? [],
+            fieldErrors: body.details.fieldErrors ?? {},
+          })
+          setFieldErrors(errors)
+          setFormError(body.error ?? 'Revise os campos destacados.')
+          focusFirstInvalidField(errors)
+        } else {
+          setFormError(
+            body?.error ??
+              'Não foi possível enviar a mensagem. Tente novamente mais tarde.',
+          )
+        }
+
         setStatus('idle')
-        toast.error('Não foi possível enviar a mensagem', {
-          description: 'Tente novamente mais tarde.',
-        })
         return
       }
 
       setFormState(initialFormState)
+      setFieldErrors({})
+      setFormError(null)
       setStatus('idle')
       onClose()
       toast.success('Mensagem enviada com sucesso!', {
@@ -142,9 +253,9 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
       })
     } catch {
       setStatus('idle')
-      toast.error('Não foi possível enviar a mensagem', {
-        description: 'Tente novamente mais tarde.',
-      })
+      setFormError(
+        'Não foi possível enviar a mensagem. Verifique sua conexão e tente novamente.',
+      )
     }
   }
 
@@ -242,9 +353,19 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
         <form
           onSubmit={handleSubmit}
+          noValidate
           autoComplete="on"
           className="relative flex-1 space-y-5 overflow-y-auto px-6 py-6 sm:px-8 sm:py-7"
         >
+          {formError ? (
+            <div
+              role="alert"
+              className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+            >
+              {formError}
+            </div>
+          ) : null}
+
           <div>
             <FieldLabel htmlFor="contact-name">Nome</FieldLabel>
             <input
@@ -253,17 +374,16 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               type="text"
               value={formState.name}
               onChange={handleChange}
-              className={cn(
-                'w-full rounded-xl border border-white/10 bg-background/60 px-4 py-3',
-                'text-sm text-white placeholder:text-muted/70',
-                'transition-all focus:border-primary/40 focus:bg-background/80 focus:outline-none focus:ring-2 focus:ring-primary/15',
-                'disabled:cursor-not-allowed disabled:opacity-60',
-              )}
+              className={getFieldInputClassName(Boolean(fieldErrors.name))}
               placeholder="Seu nome completo"
               autoComplete="name"
-              required
+              aria-invalid={Boolean(fieldErrors.name)}
+              aria-describedby={
+                fieldErrors.name ? 'contact-name-error' : undefined
+              }
               disabled={status === 'loading'}
             />
+            <FieldError id="contact-name-error" message={fieldErrors.name} />
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
@@ -275,17 +395,16 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 type="email"
                 value={formState.email}
                 onChange={handleChange}
-                className={cn(
-                  'w-full rounded-xl border border-white/10 bg-background/60 px-4 py-3',
-                  'text-sm text-white placeholder:text-muted/70',
-                  'transition-all focus:border-primary/40 focus:bg-background/80 focus:outline-none focus:ring-2 focus:ring-primary/15',
-                  'disabled:cursor-not-allowed disabled:opacity-60',
-                )}
+                className={getFieldInputClassName(Boolean(fieldErrors.email))}
                 placeholder="seu@email.com"
                 autoComplete="email"
-                required
+                aria-invalid={Boolean(fieldErrors.email)}
+                aria-describedby={
+                  fieldErrors.email ? 'contact-email-error' : undefined
+                }
                 disabled={status === 'loading'}
               />
+              <FieldError id="contact-email-error" message={fieldErrors.email} />
             </div>
             <div>
               <FieldLabel htmlFor="contact-phone">Celular</FieldLabel>
@@ -296,18 +415,17 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 inputMode="numeric"
                 value={formState.phone}
                 onChange={handlePhoneChange}
-                className={cn(
-                  'w-full rounded-xl border border-white/10 bg-background/60 px-4 py-3',
-                  'text-sm text-white placeholder:text-muted/70',
-                  'transition-all focus:border-primary/40 focus:bg-background/80 focus:outline-none focus:ring-2 focus:ring-primary/15',
-                  'disabled:cursor-not-allowed disabled:opacity-60',
-                )}
+                className={getFieldInputClassName(Boolean(fieldErrors.phone))}
                 placeholder="(00) 00000-0000"
                 autoComplete="tel"
                 maxLength={15}
-                required
+                aria-invalid={Boolean(fieldErrors.phone)}
+                aria-describedby={
+                  fieldErrors.phone ? 'contact-phone-error' : undefined
+                }
                 disabled={status === 'loading'}
               />
+              <FieldError id="contact-phone-error" message={fieldErrors.phone} />
             </div>
           </div>
 
@@ -319,15 +437,17 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               value={formState.reason}
               onChange={handleChange}
               className={cn(
-                'min-h-[128px] w-full resize-none rounded-xl border border-white/10 bg-background/60 px-4 py-3',
-                'text-sm text-white placeholder:text-muted/70',
-                'transition-all focus:border-primary/40 focus:bg-background/80 focus:outline-none focus:ring-2 focus:ring-primary/15',
-                'disabled:cursor-not-allowed disabled:opacity-60',
+                getFieldInputClassName(Boolean(fieldErrors.reason)),
+                'min-h-[128px] resize-none',
               )}
               placeholder="Conte um pouco sobre o projeto, oportunidade ou dúvida..."
-              required
+              aria-invalid={Boolean(fieldErrors.reason)}
+              aria-describedby={
+                fieldErrors.reason ? 'contact-reason-error' : undefined
+              }
               disabled={status === 'loading'}
             />
+            <FieldError id="contact-reason-error" message={fieldErrors.reason} />
           </div>
 
           <div

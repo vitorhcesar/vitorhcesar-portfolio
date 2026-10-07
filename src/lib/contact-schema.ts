@@ -25,3 +25,20 @@ export const contactFormSchema = z.object({
 })
 
 export type ContactFormInput = z.infer<typeof contactFormSchema>
+
+export type ContactFieldName = 'name' | 'email' | 'phone' | 'reason'
+
+export type ContactFieldErrors = Partial<Record<ContactFieldName, string>>
+
+export function parseContactFieldErrors(
+  flatten: z.ZodFlattenedError<ContactFormInput, string>,
+): ContactFieldErrors {
+  const errors: ContactFieldErrors = {}
+
+  for (const key of ['name', 'email', 'phone', 'reason'] as const) {
+    const message = flatten.fieldErrors[key]?.[0]
+    if (message) errors[key] = message
+  }
+
+  return errors
+}
