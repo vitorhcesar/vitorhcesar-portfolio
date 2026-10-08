@@ -1,4 +1,4 @@
-import { FileText, Menu, X } from 'lucide-react'
+import { FileText, Menu, ShoppingBag, X } from 'lucide-react'
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useActiveSection } from '#/hooks/useActiveSection'
 import { siteConfig } from '#/lib/seo'
@@ -110,6 +110,16 @@ export function Header() {
         <div className="flex items-center gap-2 sm:gap-2.5">
           {!isCurriculumMode() && (
             <>
+              <a
+                href={siteConfig.store}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Abrir ${siteConfig.storeName} — materiais digitais para desenvolvedores`}
+                className="flex size-10 items-center justify-center gap-2 rounded-full border border-white/30 text-[.9rem] font-medium text-white transition-colors hover:border-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:w-auto lg:px-4"
+              >
+                <ShoppingBag className="size-4" />
+                <span className="hidden lg:inline">{siteConfig.storeName}</span>
+              </a>
               <a
                 href={siteConfig.resume}
                 target="_blank"

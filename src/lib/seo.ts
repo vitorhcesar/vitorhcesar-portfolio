@@ -32,6 +32,8 @@ export const siteConfig = {
   linkedin: import.meta.env.VITE_LINKEDIN_URL as string | undefined,
   email: import.meta.env.VITE_CONTACT_EMAIL as string | undefined,
   resume: '/vitor-cesar-pt.pdf',
+  store: 'https://loja.vitorhcesar.com.br',
+  storeName: 'Loja',
   themeColor: '#020617',
 } as const
 
@@ -84,7 +86,10 @@ export function createPageMeta({
     { name: 'description', content: pageDescription },
     { name: 'author', content: siteConfig.author },
     { name: 'keywords', content: siteConfig.keywords.join(', ') },
-    { name: 'robots', content: noIndex ? 'noindex, nofollow' : 'index, follow' },
+    {
+      name: 'robots',
+      content: noIndex ? 'noindex, nofollow' : 'index, follow',
+    },
     { name: 'theme-color', content: siteConfig.themeColor },
     { name: 'color-scheme', content: 'dark' },
     { property: 'og:type', content: 'website' },
@@ -96,15 +101,21 @@ export function createPageMeta({
     { property: 'og:image', content: ogImageUrl },
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
-    { property: 'og:image:alt', content: `${siteConfig.name} — Desenvolvedor Full Stack` },
+    {
+      property: 'og:image:alt',
+      content: `${siteConfig.name} — Desenvolvedor Full Stack`,
+    },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: pageTitle },
     { name: 'twitter:description', content: pageDescription },
     { name: 'twitter:image', content: ogImageUrl },
-    { name: 'twitter:image:alt', content: `${siteConfig.name} — Desenvolvedor Full Stack` },
+    {
+      name: 'twitter:image:alt',
+      content: `${siteConfig.name} — Desenvolvedor Full Stack`,
+    },
   ]
 
-  if (siteConfig.twitterHandle && !isCurriculumMode()) {
+  if (!isCurriculumMode()) {
     meta.push({ name: 'twitter:creator', content: siteConfig.twitterHandle })
   }
 
