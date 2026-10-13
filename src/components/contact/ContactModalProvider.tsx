@@ -1,19 +1,23 @@
-import { ContactModal } from '#/components/contact/ContactModal'
-import { isCurriculumMode } from '#/lib/site-mode'
-import { createContext, useCallback, useContext, useState } from 'react'
+import { ContactModal } from '#/components/contact/ContactModal';
+import { isCurriculumMode } from '#/lib/site-mode';
+import type { PropsWithChildren } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState
+} from 'react';
 
-interface ContactModalContextValue {
+interface IContactModalContextValue {
   openContactModal: () => void
   closeContactModal: () => void
 }
 
-const ContactModalContext = createContext<ContactModalContextValue | null>(null)
+const ContactModalContext = createContext<IContactModalContextValue | null>(
+  null,
+)
 
-export function ContactModalProvider({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export function ContactModalProvider({ children }: PropsWithChildren) {
   const curriculumMode = isCurriculumMode()
   const [isOpen, setIsOpen] = useState(false)
 

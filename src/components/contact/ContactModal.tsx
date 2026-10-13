@@ -1,18 +1,19 @@
+import { cn } from '#/lib/cn'
+import type { ContactFieldErrors, ContactFieldName } from '#/lib/contact-schema'
 import {
   contactFormSchema,
   parseContactFieldErrors,
-  type ContactFieldErrors,
-  type ContactFieldName,
 } from '#/lib/contact-schema'
-import { cn } from '#/lib/cn'
 import { formatMobilePhoneMask } from '#/lib/phone-mask'
-import { Loader2, Mail, Send, X } from 'lucide-react'
+import { siteConfig } from '#/lib/seo'
+import { Loader2, Mail, MessageCircle, Send, X } from 'lucide-react'
+import type { PropsWithChildren } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
-type SubmitStatus = 'idle' | 'loading'
+type TSubmitStatus = 'idle' | 'loading'
 
-interface ContactApiErrorBody {
+interface IContactApiErrorBody {
   error?: string
   details?: {
     fieldErrors?: Record<string, string[]>
@@ -20,7 +21,7 @@ interface ContactApiErrorBody {
   }
 }
 
-interface ContactModalProps {
+interface IContactModalProps {
   isOpen: boolean
   onClose: () => void
 }
@@ -35,13 +36,11 @@ const initialFormState = {
   _hp: '',
 }
 
-function FieldLabel({
-  htmlFor,
-  children,
-}: {
+interface IFieldLabel extends PropsWithChildren {
   htmlFor: string
-  children: React.ReactNode
-}) {
+}
+
+function FieldLabel({ htmlFor, children }: IFieldLabel) {
   return (
     <label
       htmlFor={htmlFor}
@@ -78,14 +77,16 @@ function getFieldInputClassName(hasError: boolean) {
   )
 }
 
-export function ContactModal({ isOpen, onClose }: ContactModalProps) {
+export function ContactModal({ isOpen, onClose }: IContactModalProps) {
+  const hasWhatsapp = Boolean(siteConfig.whatsappUrl)
   const panelRef = useRef<HTMLDivElement>(null)
+
   const [isRendered, setIsRendered] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [formState, setFormState] = useState(initialFormState)
   const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({})
   const [formError, setFormError] = useState<string | null>(null)
-  const [status, setStatus] = useState<SubmitStatus>('idle')
+  const [status, setStatus] = useState<TSubmitStatus>('idle')
 
   useEffect(() => {
     if (isOpen) {
@@ -196,6 +197,38 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     e.preventDefault()
     if (status === 'loading') return
 
+    if (hasWhatsapp && siteConfig.whatsappUrl) {
+      const parsedName = contactFormSchema.shape.name.safeParse(formState.name)
+      if (!parsedName.success) {
+        const message =
+          parsedName.error.issues[0]?.message ?? 'Informe seu nome.'
+        const errors = { name: message }
+        setFieldErrors(errors)
+        setFormError(null)
+        focusFirstInvalidField(errors)
+        return
+      }
+
+      setFieldErrors({})
+      setFormError(null)
+      const whatsappUrl = new URL(siteConfig.whatsappUrl)
+      whatsappUrl.searchParams.set(
+        'text',
+        `Olá, Vitor! Meu nome é ${parsedName.data} e gostaria de conversar.`,
+      )
+      const whatsappWindow = window.open(whatsappUrl.toString(), '_blank')
+      if (!whatsappWindow) {
+        setFormError(
+          'O navegador bloqueou a abertura do WhatsApp. Permita pop-ups e tente novamente.',
+        )
+        return
+      }
+
+      whatsappWindow.opener = null
+      onClose()
+      return
+    }
+
     const parsed = contactFormSchema.safeParse(formState)
     if (!parsed.success) {
       const errors = parseContactFieldErrors(parsed.error.flatten())
@@ -217,9 +250,9 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
       })
 
       if (!response.ok) {
-        let body: ContactApiErrorBody | null = null
+        let body: IContactApiErrorBody | null = null
         try {
-          body = (await response.json()) as ContactApiErrorBody
+          body = (await response.json()) as IContactApiErrorBody
         } catch {
           body = null
         }
@@ -263,7 +296,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-end justify-center lg:items-center lg:p-6"
+      className="fixed inset-0 z-60 flex items-end justify-center lg:items-center lg:p-6"
       role="presentation"
     >
       <div
@@ -277,7 +310,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         type="button"
         aria-label="Fechar modal"
         className={cn(
-          'contact-modal-backdrop-dim absolute inset-0 bg-[#020617]/80',
+          'contact-modal-backdrop-dim absolute inset-0 bg-background/80',
           isVisible && 'is-visible',
         )}
         onClick={handleClose}
@@ -329,7 +362,11 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary shadow-[0_0_24px_rgba(59,130,246,0.2)]"
               aria-hidden
             >
-              <Mail className="size-5" />
+              {hasWhatsapp ? (
+                <MessageCircle className="size-5" />
+              ) : (
+                <Mail className="size-5" />
+              )}
             </span>
             <div>
               <p className="text-xs font-semibold tracking-[0.2em] text-primary-light uppercase">
@@ -339,13 +376,17 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 id="contact-modal-title"
                 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl"
               >
-                Envie sua mensagem
+                {hasWhatsapp
+                  ? 'Entre em contato pelo WhatsApp'
+                  : 'Envie sua mensagem'}
               </h2>
               <p
                 id="contact-modal-description"
                 className="mt-2 max-w-md text-sm leading-relaxed text-muted"
               >
-                Preencha o formulário e retorno o mais breve possível.
+                {hasWhatsapp
+                  ? 'Informe seu nome para iniciar uma conversa pelo WhatsApp.'
+                  : 'Preencha o formulário e retorno o mais breve possível.'}
               </p>
             </div>
           </div>
@@ -386,69 +427,88 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             <FieldError id="contact-name-error" message={fieldErrors.name} />
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2">
-            <div>
-              <FieldLabel htmlFor="contact-email">E-mail</FieldLabel>
-              <input
-                id="contact-email"
-                name="email"
-                type="email"
-                value={formState.email}
-                onChange={handleChange}
-                className={getFieldInputClassName(Boolean(fieldErrors.email))}
-                placeholder="seu@email.com"
-                autoComplete="email"
-                aria-invalid={Boolean(fieldErrors.email)}
-                aria-describedby={
-                  fieldErrors.email ? 'contact-email-error' : undefined
-                }
-                disabled={status === 'loading'}
-              />
-              <FieldError id="contact-email-error" message={fieldErrors.email} />
-            </div>
-            <div>
-              <FieldLabel htmlFor="contact-phone">Celular</FieldLabel>
-              <input
-                id="contact-phone"
-                name="phone"
-                type="tel"
-                inputMode="numeric"
-                value={formState.phone}
-                onChange={handlePhoneChange}
-                className={getFieldInputClassName(Boolean(fieldErrors.phone))}
-                placeholder="(00) 00000-0000"
-                autoComplete="tel"
-                maxLength={15}
-                aria-invalid={Boolean(fieldErrors.phone)}
-                aria-describedby={
-                  fieldErrors.phone ? 'contact-phone-error' : undefined
-                }
-                disabled={status === 'loading'}
-              />
-              <FieldError id="contact-phone-error" message={fieldErrors.phone} />
-            </div>
-          </div>
+          {!hasWhatsapp && (
+            <>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <FieldLabel htmlFor="contact-email">E-mail</FieldLabel>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    className={getFieldInputClassName(
+                      Boolean(fieldErrors.email),
+                    )}
+                    placeholder="seu@email.com"
+                    autoComplete="email"
+                    aria-invalid={Boolean(fieldErrors.email)}
+                    aria-describedby={
+                      fieldErrors.email ? 'contact-email-error' : undefined
+                    }
+                    disabled={status === 'loading'}
+                  />
+                  <FieldError
+                    id="contact-email-error"
+                    message={fieldErrors.email}
+                  />
+                </div>
+                <div>
+                  <FieldLabel htmlFor="contact-phone">Celular</FieldLabel>
+                  <input
+                    id="contact-phone"
+                    name="phone"
+                    type="tel"
+                    inputMode="numeric"
+                    value={formState.phone}
+                    onChange={handlePhoneChange}
+                    className={getFieldInputClassName(
+                      Boolean(fieldErrors.phone),
+                    )}
+                    placeholder="(00) 00000-0000"
+                    autoComplete="tel"
+                    maxLength={15}
+                    aria-invalid={Boolean(fieldErrors.phone)}
+                    aria-describedby={
+                      fieldErrors.phone ? 'contact-phone-error' : undefined
+                    }
+                    disabled={status === 'loading'}
+                  />
+                  <FieldError
+                    id="contact-phone-error"
+                    message={fieldErrors.phone}
+                  />
+                </div>
+              </div>
 
-          <div>
-            <FieldLabel htmlFor="contact-reason">Motivo do contato</FieldLabel>
-            <textarea
-              id="contact-reason"
-              name="reason"
-              value={formState.reason}
-              onChange={handleChange}
-              className={cn(
-                getFieldInputClassName(Boolean(fieldErrors.reason)),
-                'min-h-[128px] resize-none',
-              )}
-              placeholder="Conte um pouco sobre o projeto, oportunidade ou dúvida..."
-              aria-invalid={Boolean(fieldErrors.reason)}
-              aria-describedby={
-                fieldErrors.reason ? 'contact-reason-error' : undefined
-              }
-              disabled={status === 'loading'}
-            />
-            <FieldError id="contact-reason-error" message={fieldErrors.reason} />
-          </div>
+              <div>
+                <FieldLabel htmlFor="contact-reason">
+                  Motivo do contato
+                </FieldLabel>
+                <textarea
+                  id="contact-reason"
+                  name="reason"
+                  value={formState.reason}
+                  onChange={handleChange}
+                  className={cn(
+                    getFieldInputClassName(Boolean(fieldErrors.reason)),
+                    'min-h-[128px] resize-none',
+                  )}
+                  placeholder="Conte um pouco sobre o projeto, oportunidade ou dúvida..."
+                  aria-invalid={Boolean(fieldErrors.reason)}
+                  aria-describedby={
+                    fieldErrors.reason ? 'contact-reason-error' : undefined
+                  }
+                  disabled={status === 'loading'}
+                />
+                <FieldError
+                  id="contact-reason-error"
+                  message={fieldErrors.reason}
+                />
+              </div>
+            </>
+          )}
 
           <div
             aria-hidden="true"
@@ -487,10 +547,11 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               disabled={status === 'loading'}
               className={cn(
                 'inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3',
-                'bg-primary text-sm font-semibold text-white',
-                'shadow-[0_8px_28px_rgba(37,99,235,0.35)]',
-                'transition-all hover:bg-primary-light hover:shadow-[0_10px_32px_rgba(37,99,235,0.45)]',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-light',
+                'text-sm font-semibold',
+                hasWhatsapp
+                  ? 'border border-emerald-400/25 bg-emerald-500/10 text-emerald-300 transition-colors hover:border-emerald-400/40 hover:bg-emerald-500/15 focus-visible:outline-emerald-400'
+                  : 'bg-primary text-white shadow-[0_8px_28px_rgba(37,99,235,0.35)] transition-all hover:bg-primary-light hover:shadow-[0_10px_32px_rgba(37,99,235,0.45)] focus-visible:outline-primary-light',
+                'focus-visible:outline-2 focus-visible:outline-offset-2',
                 'disabled:cursor-not-allowed disabled:opacity-70',
               )}
             >
@@ -501,8 +562,17 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 </>
               ) : (
                 <>
-                  Enviar mensagem
-                  <Send className="size-4" aria-hidden />
+                  {hasWhatsapp ? (
+                    <>
+                      Contatar via WhatsApp
+                      <MessageCircle className="size-4" aria-hidden />
+                    </>
+                  ) : (
+                    <>
+                      Enviar mensagem
+                      <Send className="size-4" aria-hidden />
+                    </>
+                  )}
                 </>
               )}
             </button>

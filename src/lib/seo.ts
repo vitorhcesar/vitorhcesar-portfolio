@@ -1,6 +1,13 @@
 import { projects } from '#/lib/projects'
 import { isCurriculumMode } from '#/lib/site-mode'
 
+function buildWhatsappUrl(number?: string) {
+  const digits = number?.replace(/\D/g, '')
+  if (!digits) return undefined
+
+  return `https://wa.me/${digits}`
+}
+
 export const siteConfig = {
   name: 'Vitor Hugo',
   title: 'Vitor Hugo | Desenvolvedor Full Stack',
@@ -31,6 +38,9 @@ export const siteConfig = {
   socialAvatar: '/images/social-avatar.webp',
   linkedin: import.meta.env.VITE_LINKEDIN_URL as string | undefined,
   email: import.meta.env.VITE_CONTACT_EMAIL as string | undefined,
+  whatsappUrl: buildWhatsappUrl(
+    import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined,
+  ),
   resume: '/vitor-cesar-pt.pdf',
   store: 'https://loja.vitorhcesar.com.br',
   storeName: 'Loja',
