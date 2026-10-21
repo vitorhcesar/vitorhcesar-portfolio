@@ -14,6 +14,7 @@ interface INavLink {
 
 const baseNavLinks: INavLink[] = [
   { label: 'Início', href: '#inicio' },
+  { label: 'Depoimentos', href: '#depoimentos' },
   { label: 'Sobre', href: '#sobre' },
   { label: 'Projetos', href: '#projetos' },
   { label: 'Contato', href: '#contato' },
@@ -96,7 +97,7 @@ export function Header() {
 
         <nav
           aria-label="Navegação principal"
-          className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-5 md:flex lg:gap-8 xl:gap-10"
+          className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-5 lg:flex lg:gap-8 xl:gap-10"
         >
           {navLinks.map((link) => (
             <NavLink
@@ -146,7 +147,7 @@ export function Header() {
             aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
-            className="flex size-10 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:border-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:hidden"
+            className="flex size-10 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:border-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:hidden"
             onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
           >
             {isMenuOpen ? (
@@ -162,7 +163,7 @@ export function Header() {
         id="mobile-navigation"
         aria-label="Navegação mobile"
         aria-hidden={!isMenuOpen}
-        className={`absolute top-full right-4 left-4 overflow-hidden rounded-2xl border border-white/10 bg-surface/95 shadow-2xl backdrop-blur-xl transition-all duration-200 sm:right-6 sm:left-6 md:hidden ${
+        className={`absolute top-full right-4 left-4 overflow-hidden rounded-2xl border border-white/10 bg-surface/95 shadow-2xl backdrop-blur-xl transition-all duration-200 sm:right-6 sm:left-6 lg:hidden ${
           isMenuOpen
             ? 'visible translate-y-0 opacity-100'
             : 'invisible -translate-y-2 opacity-0'

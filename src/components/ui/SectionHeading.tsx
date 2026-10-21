@@ -1,8 +1,11 @@
+import { cn } from '#/lib/cn'
+
 interface SectionHeadingProps {
   label: string
   title: string
   titleId?: string
   description?: string
+  className?: string
 }
 
 export function SectionHeading({
@@ -10,9 +13,10 @@ export function SectionHeading({
   title,
   titleId,
   description,
+  className,
 }: SectionHeadingProps) {
   return (
-    <div className="mb-10 max-w-2xl lg:mb-14">
+    <div className={cn('mb-10 max-w-2xl lg:mb-14', className)}>
       <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-primary uppercase sm:text-sm sm:tracking-[0.24em]">
         {label}
       </p>

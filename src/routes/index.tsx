@@ -5,6 +5,8 @@ import { About } from '#/components/sections/About'
 import { Contact } from '#/components/sections/Contact'
 import { Hero } from '#/components/sections/Hero'
 import { Projects } from '#/components/sections/Projects'
+import { Proof } from '#/components/sections/Proof'
+import { Testimonials } from '#/components/sections/Testimonials'
 import { SplashBlockPrompt } from '#/components/splash/SplashBlockPrompt'
 import { SplashScreen } from '#/components/splash/SplashScreen'
 import { useState } from 'react'
@@ -40,6 +42,8 @@ function Home() {
         <Header />
         <main id="conteudo-principal">
           <Hero />
+          <Proof />
+          <Testimonials />
           <About />
           <Projects />
           {!curriculumMode && <Contact />}
