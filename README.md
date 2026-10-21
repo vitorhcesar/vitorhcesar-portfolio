@@ -1,208 +1,87 @@
-Welcome to your new TanStack Start app!
+<div align="center">
 
-# Getting Started
+<img src="public/images/og-image.jpg" alt="Portfólio Vítor H. Cesar" width="100%"/>
 
-To run this application:
+# 💼 Portfólio — Vítor H. Cesar
+
+Meu portfólio profissional como Desenvolvedor Full Stack: apresentação, projetos com galeria de screenshots, depoimentos e formulário de contato.
+
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![TanStack Start](https://img.shields.io/badge/TanStack_Start-FF4154?style=for-the-badge&logo=reactquery&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)
+
+**[🌐 Ver ao vivo](https://portfolio.vitorhcesar.com.br)**
+
+</div>
+
+## ✨ Funcionalidades
+
+- **Seções:** Hero (stack e experiência), Sobre (bio, formação, linha do tempo e valores), Projetos, Depoimentos e Contato
+- **Galeria de projetos** com screenshots em carrossel e lightbox
+- **Formulário de contato** validado com Zod, enviado por e-mail via SMTP (Nodemailer) na rota `/api/contact`, com rate limit em memória
+- **Opção de contato por WhatsApp**, quando `VITE_WHATSAPP_NUMBER` está definido
+- **Modo currículo** (`VITE_CURRICULUM_MODE` / `CURRICULUM_MODE`): oculta contato, redes sociais, currículo em PDF e formulário
+- **Currículo em PDF** em português e inglês
+- **SEO:** canonical, Open Graph, JSON-LD, `robots.txt` e `sitemap.xml` gerados por rota
+- **Splash screen**, animações de scroll e imagens otimizadas (WebP)
+- Script para gerar a imagem Open Graph (`bun run generate:og`)
+
+## 🛠️ Stack
+
+- **Framework:** TanStack Start (React + TanStack Router, SSR com Nitro)
+- **Linguagem:** TypeScript
+- **Estilo:** Tailwind CSS v4, Lucide Icons
+- **Validação e e-mail:** Zod, Nodemailer
+- **Build e runtime:** Vite, Bun
+- **Qualidade:** ESLint, Prettier, React Compiler
+
+## 📁 Estrutura
+
+```
+src/
+├── components/   # sections/ (Hero, About, Projects, Testimonials, Contact), layout, ui, splash
+├── hooks/        # scroll reveal, seção ativa, carrossel de screenshots
+├── lib/          # conteúdo (projetos, sobre, depoimentos), SEO, SMTP, rate limit, modo currículo
+└── routes/       # página inicial, 404, api/contact, robots.txt e sitemap.xml
+public/           # imagens, ícones de tecnologias e currículos em PDF
+scripts/          # geração de imagens (Open Graph)
+```
+
+## 🚀 Como rodar
 
 ```bash
 bun install
-bun --bun run dev
+cp .env.example .env   # preencha as variáveis
+bun --bun run dev      # http://localhost:3000
 ```
 
-# Building For Production
+| Script | O que faz |
+|---|---|
+| `dev` | Servidor de desenvolvimento na porta 3000 |
+| `build` | Build de produção |
+| `preview` | Pré-visualiza o build |
+| `generate:og` | Gera a imagem Open Graph |
+| `generate-routes` | Gera a árvore de rotas do TanStack Router |
+| `lint` / `format` / `check` | ESLint e Prettier |
 
-To build this application for production:
+## 🔐 Variáveis de ambiente
 
-```bash
-bun --bun run build
-```
+Veja `.env.example`. Nunca versione valores reais.
 
-## Styling
+| Variável | Uso |
+|---|---|
+| `VITE_SITE_URL` | URL pública (canonical, Open Graph, sitemap, JSON-LD) |
+| `VITE_CURRICULUM_MODE` / `CURRICULUM_MODE` | Liga o modo currículo (cliente / servidor) |
+| `VITE_CONTACT_EMAIL` | E-mail exibido na seção Contato (opcional) |
+| `VITE_WHATSAPP_NUMBER` | Contato via WhatsApp (opcional) |
+| `VITE_LINKEDIN_URL` | Perfil do LinkedIn no JSON-LD (opcional) |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM`, `SMTP_SECURE` | Envio de e-mail (somente servidor) |
+| `CONTACT_TO_EMAIL` | Caixa que recebe as mensagens do formulário |
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+## 📄 Licença
 
-### Removing Tailwind CSS
+O código é público para consulta. Veja os termos em [LICENSE](LICENSE).
 
-If you prefer not to use Tailwind CSS:
+## 👤 Autor
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
+Feito por **Vítor H. Cesar**, Desenvolvedor Full Stack.
 
-## Linting & Formatting
-
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
-
-```bash
-bun --bun run lint
-bun --bun run format
-bun --bun run check
-```
-
-
-## Deploy with Nitro
-
-This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.
-
-```bash
-npm run build
-node dist/server/index.mjs
-```
-
-The build output is a self-contained Node server. To deploy, push the `dist/` directory to your host (Render, Fly.io, your own VPS, etc.) and run the server command above.
-
-For host-specific presets (Vercel, Netlify, Cloudflare, AWS Lambda, etc.) and tuning, see https://v3.nitro.build/deploy.
-
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/vitorhcesar/) [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vitorhcesar)
