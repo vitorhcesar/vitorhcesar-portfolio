@@ -1,0 +1,508 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #020617;
+  --color-surface: #0f172a;
+  --color-primary: #3b82f6;
+  --color-primary-light: #60a5fa;
+  --color-muted: #94a3b8;
+  --color-border: #1e293b;
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes back-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.2));
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 28px rgba(59, 130, 246, 0.55));
+  }
+}
+
+.animate-back-pulse {
+  animation: back-pulse 3.2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes badge-smoke {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.06) translateY(-8px);
+  }
+}
+
+@keyframes badge-smoke-alt {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.96) translateY(4px);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.1) translateY(-12px);
+  }
+}
+
+@keyframes badge-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 24px rgba(37, 99, 235, 0.12),
+      0 0 48px rgba(22, 136, 245, 0.06);
+  }
+  50% {
+    box-shadow:
+      0 0 32px rgba(37, 99, 235, 0.2),
+      0 0 64px rgba(22, 136, 245, 0.1);
+  }
+}
+
+.animate-badge-smoke {
+  animation: badge-smoke 6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-badge-smoke-alt {
+  animation: badge-smoke-alt 7.5s ease-in-out infinite;
+  animation-delay: -2.5s;
+  transform-origin: center;
+}
+
+.animate-badge-glow {
+  animation: badge-glow 5s ease-in-out infinite;
+}
+
+/* ── Splash screen ─────────────────────────────────────────────── */
+
+html[data-splash='active'],
+html[data-splash='revealing'] {
+  overflow: hidden;
+}
+
+html[data-splash='active'] body,
+html[data-splash='revealing'] body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background);
+}
+
+.splash-screen.splash-exiting {
+  will-change: transform, opacity;
+  animation: splash-exit 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+html[data-splash='done'] .splash-screen,
+html[data-splash='skip'] .splash-screen {
+  display: none;
+  pointer-events: none;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.splash-line {
+  margin: 0;
+  font-size: clamp(1.5rem, 5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.splash-text {
+  white-space: pre-wrap;
+}
+
+.splash-text-accent {
+  color: var(--color-primary-light);
+}
+
+.splash-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 1px;
+  vertical-align: -0.05em;
+  background-color: var(--color-primary-light);
+  animation: splash-cursor-blink 0.55s step-end infinite;
+}
+
+@keyframes splash-cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes splash-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+}
+
+/* ── Hero entrance reveal ────────────────────────────────────── */
+
+.hero-reveal-item {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.hero-reveal-from-right {
+  opacity: 0;
+  transform: translateX(48px);
+}
+
+.hero-reveal-fade {
+  opacity: 0;
+}
+
+.hero-reveal-scale-in {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+.hero-reveal-pop-in {
+  opacity: 0;
+  transform: scale(0.86) translateY(12px);
+}
+
+.hero-reveal-slide-right {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+html[data-splash='revealing'] .hero-reveal-item {
+  animation: hero-reveal-up 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+html[data-splash='revealing'] .hero-reveal-from-right {
+  animation: hero-reveal-right 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+html[data-splash='revealing'] .hero-reveal-fade {
+  animation: hero-reveal-fade 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+html[data-splash='revealing'] .hero-reveal-scale-in {
+  animation: hero-reveal-scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+html[data-splash='revealing'] .hero-reveal-pop-in {
+  animation: hero-reveal-pop-in 0.45s cubic-bezier(0.34, 1.25, 0.64, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+html[data-splash='revealing'] .hero-reveal-slide-right {
+  animation: hero-reveal-slide-right 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+html[data-splash='skip'] .hero-reveal-item,
+html[data-splash='skip'] .hero-reveal-from-right,
+html[data-splash='skip'] .hero-reveal-fade,
+html[data-splash='skip'] .hero-reveal-scale-in,
+html[data-splash='skip'] .hero-reveal-pop-in,
+html[data-splash='skip'] .hero-reveal-slide-right {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+html[data-splash='done'] .hero-reveal-item,
+html[data-splash='done'] .hero-reveal-from-right,
+html[data-splash='done'] .hero-reveal-fade,
+html[data-splash='done'] .hero-reveal-scale-in,
+html[data-splash='done'] .hero-reveal-pop-in,
+html[data-splash='done'] .hero-reveal-slide-right {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes hero-reveal-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-reveal-right {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes hero-reveal-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-reveal-scale-in {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-reveal-pop-in {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes hero-reveal-slide-right {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Section scroll reveal (About) ───────────────────────────── */
+
+.section-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.section-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Contact modal ───────────────────────────────────────────── */
+
+/* Blur appears instantly on enter, fades out faster than the panel on exit. */
+.contact-modal-backdrop-blur {
+  opacity: 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: opacity 0.12s ease;
+}
+
+.contact-modal-backdrop-blur.is-visible {
+  opacity: 1;
+  transition: opacity 0s;
+}
+
+.contact-modal-backdrop-dim {
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.contact-modal-backdrop-dim.is-visible {
+  opacity: 1;
+}
+
+.contact-modal-panel {
+  opacity: 0;
+  transform: translateY(100%);
+  transition:
+    opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-modal-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 1024px) {
+  .contact-modal-panel {
+    transform: translateY(20px) scale(0.96);
+  }
+
+  .contact-modal-panel.is-visible {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.screenshot-lightbox-backdrop-blur {
+  opacity: 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: opacity 0.12s ease;
+}
+
+.screenshot-lightbox-backdrop-blur.is-visible {
+  opacity: 1;
+  transition: opacity 0s;
+}
+
+.screenshot-lightbox-backdrop-dim {
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.screenshot-lightbox-backdrop-dim.is-visible {
+  opacity: 1;
+}
+
+.screenshot-lightbox-panel {
+  opacity: 0;
+  transform: translateY(100%);
+  transition:
+    opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.screenshot-lightbox-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 1024px) {
+  .screenshot-lightbox-panel {
+    transform: translateY(20px) scale(0.96);
+  }
+
+  .screenshot-lightbox-panel.is-visible {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.splash-prompt-enter {
+  animation: splash-prompt-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes splash-prompt-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .section-reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[data-splash='active'] .splash-screen {
+    display: none;
+  }
+
+  html[data-splash='active'] .hero-reveal-item,
+  html[data-splash='active'] .hero-reveal-from-right,
+  html[data-splash='active'] .hero-reveal-fade,
+  html[data-splash='active'] .hero-reveal-scale-in,
+  html[data-splash='active'] .hero-reveal-pop-in,
+  html[data-splash='active'] .hero-reveal-slide-right {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
