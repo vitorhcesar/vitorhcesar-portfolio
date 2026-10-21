@@ -50,7 +50,7 @@ const cardSvg = `
     font-family="DejaVu Sans, Liberation Sans, Arial, sans-serif"
     font-size="20"
     fill="#64748b"
-  >React • Next.js • TypeScript • +5 anos</text>
+  >React • Next.js • TypeScript • +2 anos</text>
 </svg>
 `
 

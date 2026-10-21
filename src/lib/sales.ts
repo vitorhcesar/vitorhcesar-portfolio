@@ -6,7 +6,7 @@ export interface IStat {
 export const salesContent = {
   stats: [
     {
-      value: '+5 anos',
+      value: '+2 anos',
       label: 'entregando software de verdade, não protótipo.',
     },
     {

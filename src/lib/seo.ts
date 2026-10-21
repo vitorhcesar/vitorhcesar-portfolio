@@ -12,7 +12,7 @@ export const siteConfig = {
   name: 'Vitor Hugo',
   title: 'Vitor Hugo | Desenvolvedor Full Stack',
   description:
-    'Portfólio de Vitor Hugo. Desenvolvimento web e mobile com React, Next.js e TypeScript. Mais de 5 anos de experiência.',
+    'Portfólio de Vitor Hugo. Desenvolvimento web e mobile com React, Next.js e TypeScript. Mais de 2 anos de experiência.',
   locale: 'pt_BR',
   language: 'pt-BR',
   author: 'Vitor Hugo César',

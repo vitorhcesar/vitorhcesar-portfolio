@@ -53,7 +53,7 @@ export function ExperienceBadge() {
 
         <div className="leading-none pt-6">
           <p className="text-[2rem] font-bold tracking-tight text-[#1688f5]">
-            +5 anos
+            +2 anos
           </p>
           <p className="mt-1 text-[1.2rem] text-[#9fd6ff]/80">de experiência</p>
         </div>

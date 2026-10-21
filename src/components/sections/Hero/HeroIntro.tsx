@@ -25,7 +25,7 @@ export function HeroIntro() {
       >
         Desenvolvedor full stack com{' '}
         <span className="font-semibold text-primary-light">
-          mais de 5 anos de experiência
+          mais de 2 anos de experiência
         </span>
         , especializado em construir aplicações web e mobile modernas,
         escaláveis e de alta performance.
